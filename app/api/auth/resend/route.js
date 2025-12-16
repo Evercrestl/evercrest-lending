@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import connectDB from "@/lib/mongodb";
-import User from "@/models/User";
+import connectDB from "@/lib/config/db";
+import User from "@/lib/models/User";
 import crypto from "crypto";
 import sendVerificationEmail from "@/lib/sendVerificationEmail";
 
