@@ -1,12 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
 import toast from "react-hot-toast";
 import Link from "next/link";
 
 
-export default function Login() {
+function LoginContent() {
     const params = useSearchParams();
     const [form, setForm] = useState({
         email: "",
@@ -106,4 +105,12 @@ export default function Login() {
             </div>
         </div>
     );
+}
+
+export default function Login(){
+    return (
+        <Suspense fallback={null}>
+            <LoginContent />
+        </Suspense>
+    )
 }
