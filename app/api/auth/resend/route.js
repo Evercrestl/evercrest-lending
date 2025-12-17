@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import connectDB from "@/lib/config/db";
+import { connectDB } from "@/lib/config/db";
 import User from "@/lib/models/User";
 import crypto from "crypto";
 import sendVerificationEmail from "@/lib/sendVerificationEmail";
