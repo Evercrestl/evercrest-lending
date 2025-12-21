@@ -314,6 +314,18 @@ export default function Register() {
                                         }
                                     />
                                 </div>
+                                <div className="mt-2 p-2 bg-green-50 rounded-lg text-green-700 font-medium">
+                                    Total Repayment:{" "}
+                                    <span>
+                                         ₱
+                                        {form.loanAmount && form.repaymentMonths
+                                            ? (
+                                                form.loanAmount *
+                                                (1 + form.interestRate / 100)
+                                            ).toLocaleString()
+                                            : " 0"}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <button
