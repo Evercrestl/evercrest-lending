@@ -73,7 +73,7 @@ export default function CurrencyInput({
         )}
 
         <input
-          type="number"
+          type="text"
           value={value}
           onChange={handleChange}
           onFocus={handleFocus}
