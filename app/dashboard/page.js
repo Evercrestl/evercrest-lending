@@ -170,7 +170,7 @@ export default async function Dashboard() {
                                 <button className="text-sm font-bold text-blue-600 hover:underline">View All</button>
                             </div>
                             <div className="divide-y divide-slate-100">
-                                {transactions.map((t) => (
+                                {/* {transactions.map((t) => (
                                     <div key={t._id} className="py-4 flex justify-between items-center hover:bg-slate-50 px-4 -mx-4 rounded-xl transition-colors">
                                         <div className="flex items-center gap-4">
                                             <div className={`w-10 h-10 rounded-full flex items-center justify-center ${t.amount < 0 ? 'bg-red-50' : 'bg-green-50'}`}>
@@ -188,7 +188,33 @@ export default async function Dashboard() {
                                             <p className="text-[10px] text-slate-400 uppercase font-bold">Success</p>
                                         </div>
                                     </div>
-                                ))}
+                                ))} */}
+                                <div className="divide-y divide-slate-100">
+                                    {transactions.map((t) => (
+                                        <div key={t._id} className="py-4 flex justify-between items-center hover:bg-slate-50 px-4 -mx-4 rounded-xl transition-colors">
+                                            <div className="flex items-center gap-4">
+                                                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${t.amount < 0 ? 'bg-red-50' : 'bg-green-50'}`}>
+                                                    {t.amount < 0 ? <ArrowDownIcon /> : <ArrowUpIcon />}
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-bold text-slate-800">{t.description}</p>
+                                                    <p className="text-xs text-slate-400">{new Date(t.createdAt).toLocaleDateString()}</p>
+                                                </div>
+                                            </div>
+
+                                            {/* --- UPDATED SECTION START --- */}
+                                            <div className="text-right flex flex-col items-end gap-1">
+                                                <p className={`font-bold ${t.amount < 0 ? 'text-red-500' : 'text-green-600'}`}>
+                                                    {t.amount < 0 ? '-' : '+'} ₱{Math.abs(t.amount).toLocaleString()}
+                                                </p>
+
+                                                {/* Helper component we created earlier */}
+                                                <StatusBadge status={t.status} />
+                                            </div>
+                                            {/* --- UPDATED SECTION END --- */}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -217,6 +243,56 @@ function ActionBtn({ icon, label, sub }) {
             </div>
         </button>
     );
+}
+
+// function StatusBadge({ status }) {
+//     const styles = {
+//         completed: "bg-green-100 text-green-700 border-green-200",
+//         pending: "bg-amber-100 text-amber-700 border-amber-200",
+//         failed: "bg-red-100 text-red-700 border-red-200",
+//     };
+
+//     const currentStyle = styles[status?.toLowerCase()] || "bg-slate-100 text-slate-600 border-slate-200";
+
+//     return (
+//         <span className={`text-[10px] px-2 py-0.5 rounded-full border font-bold uppercase tracking-wider ${currentStyle}`}>
+//             {status || "Success"}
+//         </span>
+//     );
+// }
+// function StatusBadge({ status }) {
+//   const styles = {
+//     completed: "bg-green-100 text-green-700 border-green-200",
+//     pending: "bg-amber-100 text-amber-700 border-amber-200",
+//     failed: "bg-red-100 text-red-700 border-red-200",
+//   };
+
+//   // Convert to lowercase to ensure it matches our styles object
+//   const normalizedStatus = status?.toLowerCase();
+//   const currentStyle = styles[normalizedStatus] || "bg-slate-100 text-slate-600 border-slate-200";
+  
+//   return (
+//     <span className={`text-[10px] px-2 py-0.5 rounded-full border font-bold uppercase tracking-wider ${currentStyle}`}>
+//       {status || "Unknown"} 
+//     </span>
+//   );
+// }
+
+function StatusBadge({ status }) {
+  const styles = {
+    completed: "bg-green-100 text-green-700 border-green-200",
+    pending: "bg-amber-100 text-amber-700 border-amber-200", // Yellow for pending
+    failed: "bg-red-100 text-red-700 border-red-200",
+  };
+
+  const normalizedStatus = status?.toLowerCase() || "pending";
+  const currentStyle = styles[normalizedStatus] || "bg-slate-100 text-slate-600 border-slate-200";
+  
+  return (
+    <span className={`text-[10px] px-2 py-0.5 rounded-full border font-bold uppercase tracking-wider ${currentStyle}`}>
+      {status || "Pending"}
+    </span>
+  );
 }
 
 const ArrowUpIcon = () => <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>;

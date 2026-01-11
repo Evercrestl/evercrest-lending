@@ -29,35 +29,131 @@ export default function PaymentModal({ deposit, percentage, loanAmount, triggerL
   //   }
   // };
 
-  const handlePayment = (e) => {
+  //   const handlePayment = (e) => {
+  //     e.preventDefault();
+  //     setLoading(true);
+
+  //     // 1. Prepare the data for the message
+  //     const phoneNumber = "+601169615778"; // Replace with your actual WhatsApp number (include country code)
+  //     const message = `Hello, I would like to confirm my security deposit:
+
+  // *Loan Details:*
+  // - Total Loan: ₱${loanAmount.toLocaleString()}
+  // - Deposit Amount (${percentage}%): ₱${deposit.toLocaleString()}
+  // - Payment Method: GCash / Maya
+
+  // Please provide the payment instructions. Thank you!`;
+
+  //     // 2. Encode the message for URL safety
+  //     const encodedMessage = encodeURIComponent(message);
+  //     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+  //     // 3. Simulate a brief loading state for UX, then redirect
+  //     setTimeout(() => {
+  //       setLoading(false);
+  //       setIsOpen(false);
+  //       window.open(whatsappUrl, "_blank"); // Opens WhatsApp in a new tab
+
+  //       toast.success("Redirecting to WhatsApp...", {
+  //         description: "Please send the pre-filled message to our support team.",
+  //       });
+  //     }, 800);
+  //   };
+//   const handlePayment = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+
+//     try {
+//       // 1. Record the transaction in the database first
+//       // We pass the amount as negative because it's a deposit/payment
+//       const result = await processSecurityDeposit({
+//         amount: -deposit,
+//         description: `Security Deposit for ₱${loanAmount.toLocaleString()} Loan`,
+//         status: "pending" // Ensure your server action handles a 'pending' status
+//       });
+
+//       if (result.success) {
+//         // 2. Prepare WhatsApp Data
+//         const phoneNumber = "639123456789";
+//         const message = `Hello! I just initiated a security deposit.
+        
+// *Transaction ID:* ${result.transactionId || 'NEW'}
+// *Loan:* ₱${loanAmount.toLocaleString()}
+// *Deposit:* ₱${deposit.toLocaleString()}
+
+// Please verify my payment.`;
+
+//         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+//         // 3. UI Feedback and Redirect
+//         toast.success("Transaction Recorded", {
+//           description: "Redirecting to WhatsApp for verification...",
+//         });
+
+//         setTimeout(() => {
+//           setIsOpen(false);
+//           setLoading(false);
+//           window.open(whatsappUrl, "_blank");
+//         }, 1000);
+
+//       } else {
+//         throw new Error(result.message || "Failed to log transaction");
+//       }
+//     } catch (error) {
+//       setLoading(false);
+//       toast.error("Error", {
+//         description: error.message,
+//       });
+//     }
+//   };
+
+
+  const handlePayment = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    // 1. Prepare the data for the message
-    const phoneNumber = "+601169615778"; // Replace with your actual WhatsApp number (include country code)
-    const message = `Hello, I would like to confirm my security deposit:
-    
-*Loan Details:*
-- Total Loan: ₱${loanAmount.toLocaleString()}
-- Deposit Amount (${percentage}%): ₱${deposit.toLocaleString()}
-- Payment Method: GCash / Maya
+    try {
+      // 1. Call your Server Action (payment.js) to save to MongoDB
+      // We pass the deposit amount (e.g., 3500)
+      const result = await processSecurityDeposit(deposit);
 
-Please provide the payment instructions. Thank you!`;
+      if (result.success) {
+        // 2. Prepare WhatsApp Data
+        const phoneNumber = "+601169615778"; // YOUR GCASH/SUPPORT NUMBER
+        const message = `*LOAN DEPOSIT NOTIFICATION* 🏦
+--------------------------------
+Hello Support, I have just initiated my security deposit payment.
 
-    // 2. Encode the message for URL safety
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+*Details:*
+- Loan Amount: ₱${loanAmount.toLocaleString()}
+- Security Deposit Fee (7%): ₱${deposit.toLocaleString()}
+- User: ${triggerLabel === 'Withdraw' ? 'Customer' : triggerLabel}
 
-    // 3. Simulate a brief loading state for UX, then redirect
-    setTimeout(() => {
+Please verify my payment so I can proceed with the withdrawal.`;
+
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+        // 3. Success Feedback
+        toast.success("Transaction Logged", {
+          description: "Opening WhatsApp for verification...",
+        });
+
+        // 4. Redirect to WhatsApp
+        setTimeout(() => {
+          setIsOpen(false);
+          setLoading(false);
+          window.open(whatsappUrl, "_blank");
+        }, 1000);
+
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (error) {
       setLoading(false);
-      setIsOpen(false);
-      window.open(whatsappUrl, "_blank"); // Opens WhatsApp in a new tab
-      
-      toast.success("Redirecting to WhatsApp...", {
-        description: "Please send the pre-filled message to our support team.",
+      toast.error("Process Failed", {
+        description: error.message || "Could not connect to server",
       });
-    }, 800);
+    }
   };
 
   return (
@@ -72,13 +168,13 @@ Please provide the payment instructions. Thank you!`;
 
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div 
+          <div
             className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300"
             onClick={() => setIsOpen(false)}
           />
 
           <div className="relative bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-            
+
             {/* Header */}
             <div className="bg-linear-to-br from-blue-600 to-indigo-700 p-8 text-white">
               <div className="flex justify-between items-center">
