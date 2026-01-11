@@ -4,7 +4,7 @@ import { connectDB } from "@/lib/config/db";
 import User from "@/lib/models/User";
 import Transaction from "@/lib/models/Transaction";
 import PaymentModal from "@/components/PaymentModal";
-import BankSelect from "@/components/BankSelect";
+import BankAction from "@/components/BankSelect";
 import { redirect } from "next/navigation";
 import {
     Bell,
@@ -160,17 +160,7 @@ export default async function Dashboard() {
                             <h3 className="text-sm font-bold text-slate-800 ml-2">Quick Actions</h3>
                             <ActionBtn icon={<CreditCard className="text-blue-600" />} label="Make Payment" sub="Pay using Card or Bank" />
                             {/* <ActionBtn icon={<Landmark className="text-blue-600" />} label="Add Bank" sub="Bank Account Details" /> */}
-                            {/* <Button>
-                                <div className="max-w-md p-6">
-                                    <BankSelect value={bank} onChange={setBank} />
-
-                                    {bank && (
-                                        <p className="mt-4 text-sm text-gray-600">
-                                            Selected Bank: <strong>{bank}</strong>
-                                        </p>
-                                    )}
-                                </div>
-                            </Button> */}
+                            <BankAction />
                             <ActionBtn icon={<FileText className="text-blue-600" />} label="Download Statement" sub="Check for better rates" />
                         </div>
 

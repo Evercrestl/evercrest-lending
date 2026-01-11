@@ -9,24 +9,55 @@ export default function PaymentModal({ deposit, percentage, loanAmount, triggerL
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handlePayment = async (e) => {
+  // const handlePayment = async (e) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+
+  //   const result = await processSecurityDeposit(deposit);
+
+  //   if (result.success) {
+  //     setLoading(false);
+  //     setIsOpen(false);
+  //     toast.success("Deposit Confirmed", {
+  //       description: `₱${deposit.toLocaleString()} has been processed successfully.`,
+  //     });
+  //   } else {
+  //     setLoading(false);
+  //     toast.error("Payment Failed", {
+  //       description: result.message,
+  //     });
+  //   }
+  // };
+
+  const handlePayment = (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const result = await processSecurityDeposit(deposit);
+    // 1. Prepare the data for the message
+    const phoneNumber = "+601169615778"; // Replace with your actual WhatsApp number (include country code)
+    const message = `Hello, I would like to confirm my security deposit:
+    
+*Loan Details:*
+- Total Loan: ₱${loanAmount.toLocaleString()}
+- Deposit Amount (${percentage}%): ₱${deposit.toLocaleString()}
+- Payment Method: GCash / Maya
 
-    if (result.success) {
+Please provide the payment instructions. Thank you!`;
+
+    // 2. Encode the message for URL safety
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+    // 3. Simulate a brief loading state for UX, then redirect
+    setTimeout(() => {
       setLoading(false);
       setIsOpen(false);
-      toast.success("Deposit Confirmed", {
-        description: `₱${deposit.toLocaleString()} has been processed successfully.`,
+      window.open(whatsappUrl, "_blank"); // Opens WhatsApp in a new tab
+      
+      toast.success("Redirecting to WhatsApp...", {
+        description: "Please send the pre-filled message to our support team.",
       });
-    } else {
-      setLoading(false);
-      toast.error("Payment Failed", {
-        description: result.message,
-      });
-    }
+    }, 800);
   };
 
   return (

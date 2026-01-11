@@ -1,50 +1,62 @@
 "use client";
 
-export default function BankSelect({ value, onChange }) {
-  return (
-    <div className="w-full">
-      <label className="block text-sm font-semibold text-gray-700 mb-2">
-        Select Bank
-      </label>
+import { useState } from "react";
+import { Landmark, ChevronDown, Check } from "lucide-react";
 
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        <option value="">-- Select a bank --</option>
+const PH_BANKS = [
+    "BDO Unibank",
+    "Bank of the Philippine Islands (BPI)",
+    "Metropolitan Bank and Trust Company (Metrobank)",
+    "Land Bank of the Philippines",
+    "Philippine National Bank (PNB)",
+    "Security Bank",
+    "China Banking Corporation (China Bank)",
+    "Union Bank of the Philippines",
+    "GCash / GCash Padala",
+    "Maya (formerly PayMaya)"
+];
 
-        {/* Major Banks */}
-        <option value="BDO">BDO Unibank</option>
-        <option value="BPI">Bank of the Philippine Islands (BPI)</option>
-        <option value="Metrobank">Metropolitan Bank & Trust Company (Metrobank)</option>
-        <option value="Landbank">Land Bank of the Philippines</option>
-        <option value="PNB">Philippine National Bank (PNB)</option>
-        <option value="Security Bank">Security Bank</option>
-        <option value="China Bank">China Banking Corporation</option>
-        <option value="UnionBank">UnionBank of the Philippines</option>
-        <option value="EastWest">EastWest Bank</option>
-        <option value="RCBC">Rizal Commercial Banking Corporation (RCBC)</option>
-        <option value="PSBank">Philippine Savings Bank (PSBank)</option>
-        <option value="UCPB">United Coconut Planters Bank (UCPB)</option>
+export default function BankAction() {
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedBank, setSelectedBank] = useState("");
 
-        {/* Digital / New Banks */}
-        <option value="Maya Bank">Maya Bank</option>
-        <option value="Tonik">Tonik Digital Bank</option>
-        <option value="GoTyme">GoTyme Bank</option>
-        <option value="UNO">UNO Digital Bank</option>
-        <option value="Komo">Komo by EastWest</option>
+    return (
+        <div className="relative w-full">
+            <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className="flex items-center gap-4 p-5 bg-white border border-slate-200 rounded-2xl w-full text-left hover:border-blue-300 hover:shadow-md transition-all active:scale-[0.98]"
+            >
+                <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+                    <Landmark className="text-blue-600" />
+                </div>
+                <div className="flex-1">
+                    <p className="text-sm font-bold text-slate-800">
+                        {selectedBank || "Add Bank Account"}
+                    </p>
+                    <p className="text-xs text-slate-400">
+                        {selectedBank ? "Change your linked bank" : "Link your PH bank account"}
+                    </p>
+                </div>
+                <ChevronDown size={18} className={`text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
 
-        {/* Rural / Savings */}
-        <option value="CTBC">CTBC Bank Philippines</option>
-        <option value="HSBC">HSBC Philippines</option>
-        <option value="Standard Chartered">Standard Chartered Bank Philippines</option>
-
-        {/* E-Wallets (Optional) */}
-        <option value="GCash">GCash</option>
-        <option value="GrabPay">GrabPay</option>
-        <option value="ShopeePay">ShopeePay</option>
-      </select>
-    </div>
-  );
+            {isOpen && (
+                <div className="absolute z-50 mt-2 w-full bg-white border border-slate-200 rounded-2xl shadow-xl max-h-60 overflow-y-auto p-2">
+                    {PH_BANKS.map((bank) => (
+                        <div
+                            key={bank}
+                            onClick={() => {
+                                setSelectedBank(bank);
+                                setIsOpen(false);
+                            }}
+                            className="flex items-center justify-between px-4 py-3 hover:bg-blue-50 rounded-xl cursor-pointer transition-colors"
+                        >
+                            <span className="text-sm text-slate-700 font-medium">{bank}</span>
+                            {selectedBank === bank && <Check size={16} className="text-blue-600" />}
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
 }
