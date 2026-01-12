@@ -19,20 +19,10 @@ export async function processSecurityDeposit(amount) {
 
     // 1. Create the Transaction record
     const finalAmount = Math.round(amount * 100) / 100;
-    // await Transaction.create({
-    //   userId: decoded.id,
-    //   description: "Security Deposit Payment (7%)",
-    //   amount: finalAmount, 
-    //   status: "completed",
-    //   type: "deposit",
-    // });
-    // Inside payment.js
-
-    // Inside processSecurityDeposit in payment.js
     await Transaction.create({
       userId: decoded.id,
       description: "Security Deposit Payment (7%)",
-      amount: -finalAmount,
+      amount: +finalAmount,
       status: "pending", // MUST BE LOWERCASE 'pending'
       type: "deposit",
     });
@@ -78,27 +68,129 @@ export async function processSecurityDeposit(amount) {
 // }
 
 // @/app/actions/payment.js
-export async function approveTransaction(transactionId) {
-    try {
-        await connectDB();
+// export async function approveTransaction(transactionId) {
+//     try {
+//         await connectDB();
         
-        // We use $set to ensure the field is created if it didn't exist
-        const updatedTransaction = await Transaction.findByIdAndUpdate(
-            transactionId,
-            { $set: { status: "completed" } }, 
-            { new: true }
-        );
+//         // We use $set to ensure the field is created if it didn't exist
+//         const updatedTransaction = await Transaction.findByIdAndUpdate(
+//             transactionId,
+//             { $set: { status: "completed" } }, 
+//             { new: true }
+//         );
 
-        if (updatedTransaction.type === "deposit") {
-            await User.findByIdAndUpdate(updatedTransaction.userId, {
-                $set: { "loanStatus.depositPaid": true }
-            });
-        }
+//         if (updatedTransaction.type === "deposit") {
+//             await User.findByIdAndUpdate(updatedTransaction.userId, {
+//                 $set: { "loanStatus.depositPaid": true }
+//             });
+//         }
 
-        revalidatePath("/admin");
-        revalidatePath("/dashboard");
-        return { success: true };
-    } catch (error) {
-        return { success: false, message: error.message };
-    }
+//         revalidatePath("/admin");
+//         revalidatePath("/dashboard");
+//         return { success: true };
+//     } catch (error) {
+//         return { success: false, message: error.message };
+//     }
+// }
+
+// export async function approveTransaction(transactionId) {
+//   try {
+//     await connectDB();
+
+//     // 1. Find & complete the transaction
+//     const tx = await Transaction.findByIdAndUpdate(
+//       transactionId,
+//       { $set: { status: "completed" } },
+//       { new: true }
+//     );
+
+//     if (!tx) throw new Error("Transaction not found");
+
+//     // 2. If it's a security deposit → add to loan balance
+//     if (tx.type === "deposit") {
+//       await User.findByIdAndUpdate(tx.userId, {
+//         $inc: { loanBalance: tx.amount },          // 🔥 ADD deposit to loan
+//         $set: { "loanStatus.depositPaid": true }
+//       });
+//     }
+
+//     revalidatePath("/admin");
+//     revalidatePath("/dashboard");
+
+//     return { success: true };
+//   } catch (error) {
+//     console.error(error);
+//     return { success: false, message: error.message };
+//   }
+// }
+
+// export async function approveTransaction(transactionId) {
+//   try {
+//     await connectDB();
+
+//     // 1. Approve the deposit
+//     const deposit = await Transaction.findByIdAndUpdate(
+//       transactionId,
+//       { $set: { status: "approved" } },
+//       { new: true }
+//     );
+
+//     if (!deposit) throw new Error("Transaction not found");
+
+//     // 2. Add deposit to loan balance
+//     if (deposit.type === "deposit") {
+//       await User.findByIdAndUpdate(deposit.userId, {
+//         $inc: { loanBalance: deposit.amount },
+//         $set: { "loanStatus.depositPaid": true }
+//       });
+
+//       // 3. Create withdrawal request
+//       await Transaction.create({
+//         userId: deposit.userId,
+//         amount: deposit.amount,
+//         description: "Loan Disbursement",
+//         type: "withdrawal",
+//         status: "awaiting_bank"
+//       });
+//     }
+
+//     revalidatePath("/admin");
+//     revalidatePath("/dashboard");
+
+//     return { success: true };
+//   } catch (error) {
+//     return { success: false, message: error.message };
+//   }
+// }
+
+export async function approveTransaction(transactionId) {
+  await connectDB();
+
+  const deposit = await Transaction.findByIdAndUpdate(
+    transactionId,
+    { $set: { status: "approved" } },
+    { new: true }
+  );
+
+  if (!deposit) throw new Error("Not found");
+
+  // Add deposit to loan
+  await User.findByIdAndUpdate(deposit.userId, {
+    $inc: { loanBalance: deposit.amount },
+    $set: { "loanStatus.depositPaid": true }
+  });
+
+  // Create withdrawal
+  await Transaction.create({
+    userId: deposit.userId,
+    amount: deposit.amount,
+    type: "withdrawal",
+    description: "Loan Disbursement",
+    status: "awaiting_bank"
+  });
+
+  revalidatePath("/dashboard");
+  revalidatePath("/admin");
 }
+
+
