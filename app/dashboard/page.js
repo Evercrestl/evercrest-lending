@@ -195,13 +195,23 @@ export default async function Dashboard() {
                                     </button>
                                 )} */}
 
-                                <DashboardClient
+                                {/* <DashboardClient
                                     totalLoan={totalLoan}
                                     securityDeposit={securityDeposit}
                                     depositPercentage={depositPercentage}
                                     depositTx={depositTx}
                                     withdrawalTx={withdrawalTx}
-                                />
+                                /> */}
+
+                                <main className="flex-1 overflow-y-auto relative">
+                                    <DashboardClient
+                                        totalLoan={totalLoan}
+                                        securityDeposit={securityDeposit}
+                                        depositPercentage={depositPercentage}
+                                        depositTx={depositTx}
+                                        withdrawalTx={withdrawalTx}
+                                    />
+                                </main>
 
 
                             </div>
