@@ -25,7 +25,7 @@ export default function DashboardClient({
 
     return () => clearTimeout(timer);
   }, []);
-  if (!spinning) return null;
+  if (!spinning) return <h1>Your Transfer is currently Processing</h1>;
 
   return (
     <>
