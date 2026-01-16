@@ -30,6 +30,16 @@ export async function POST(req) {
     // Generate verification token
     const token = crypto.randomBytes(32).toString("hex");
 
+    const existingUser = await User.findOne({ email: body.email });
+
+    if (existingUser) {
+      return NextResponse.json(
+        { error: "Email already registered" },
+        { status: 400 }
+      );
+    }
+
+
     const user = await User.create({
       ...body,
       password: hashedPassword,
@@ -39,7 +49,10 @@ export async function POST(req) {
     });
 
     // Send verification email (placeholder)
-    await sendVerificationEmail(user.email, token);
+    sendVerificationEmail(user.email, token).catch((err) => {
+  console.error("EMAIL ERROR:", err.message);
+});
+
 
     return NextResponse.json({ success: true });
   } catch (error) {

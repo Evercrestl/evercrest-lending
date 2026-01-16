@@ -3,7 +3,8 @@ import jwt from "jsonwebtoken";
 import { connectDB } from "@/lib/config/db";
 import User from "@/lib/models/User";
 import Transaction from "@/lib/models/Transaction";
-import PaymentModal from "@/components/PaymentModal";
+import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
+import Bank from "@/lib/models/Bank";
 import DashboardClient from "@/components/DashboardClient";
 import BankAction from "@/components/BankSelect";
 import { redirect } from "next/navigation";
@@ -19,7 +20,6 @@ import {
     Landmark
 } from "lucide-react";
 
-// import VisualCharts from "@/components/VisualCharts";
 
 export default async function Dashboard() {
     const cookieStore = await cookies();
@@ -46,12 +46,20 @@ export default async function Dashboard() {
         createdAt: t.createdAt?.toISOString(),
     }));
 
+    const bank = await Bank.findOne({ userId: decoded.id }).lean();
+
+
     // ==================
     // LOAN CALCULATIONS
     // ==================
 
     const totalLoan = Number(user?.loanAmount) || 0;
     const currentBalance = Number(user?.loanBalance) || 0;
+    // if (withdrawalTx) {
+    //     currentBalance = 0;
+    // }
+    const repaymentMonths = Number(user?.repaymentMonths) || 0;
+
 
     const depositPercentage = 7;
 
@@ -64,7 +72,7 @@ export default async function Dashboard() {
     // Percentage paid
     const percentPaid =
         totalLoan > 0
-            ? Math.round(((totalLoan - currentBalance) / totalLoan) * 100)
+            ? Math.round((-1 * (totalLoan - currentBalance) / totalLoan) * 100)
             : 0;
 
     // const [bank, setBank] = useState("");
@@ -82,9 +90,80 @@ export default async function Dashboard() {
     const withdrawalTx = await Transaction.findOne({
         userId: decoded.id,
         type: "withdrawal",
-        status: "awaiting_bank"
+        status: { $in: ["awaiting_bank", "approved", "completed"] }
     }).lean();
 
+    // const displayBalance = (withdrawalTx || bank ) ? 0 : (Number(user?.loanBalance) || 0);
+
+    let displayBalance = 0;
+
+    const wdt = (totalLoan + totalLoan * 0.07)
+
+    if (withdrawalTx || bank) {
+        // Stage 3: Bank linked or Withdrawal started
+        displayBalance = 0;
+    } else if (depositTx?.status === "completed") {
+        // Stage 2: Deposit paid AND Admin approved it
+        displayBalance = totalLoan + securityDeposit;
+    } else {
+        // Stage 1: Initial state (even if deposit is 'pending')
+        displayBalance = totalLoan;
+    }
+    let nextPaymentDate = null;
+
+    if (user?.createdAt) {
+        const registrationDate = new Date(user.createdAt);
+        nextPaymentDate = new Date(registrationDate);
+        nextPaymentDate.setMonth(registrationDate.getMonth() + 1);
+    }
+
+    const formattedNextPayment = nextPaymentDate
+        ? nextPaymentDate.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        })
+        : "—";
+
+
+    let interestRate = 0;
+
+    if (repaymentMonths <= 5) {
+        interestRate = 4.5;
+    } else if (repaymentMonths <= 12) {
+        interestRate = 5.5;
+    } else if (repaymentMonths <= 24) {
+        interestRate = 7;
+    } else {
+        interestRate = 9;
+    }
+
+    const totalInterest =
+        (totalLoan * interestRate * repaymentMonths) / (100 * 12);
+
+    const totalLoanWithInterest = Math.round(totalLoan + totalInterest);
+
+
+    const monthlyPayment =
+        repaymentMonths > 0
+            ? Math.round(totalLoanWithInterest / repaymentMonths)
+            : 0;
+
+
+    // const displayBalance = withdrawalTx ? 0 : currentBalance;
+
+    // Virtual transaction for processing withdrawal
+    let processingTransaction = null;
+
+    if (withdrawalTx) {
+        processingTransaction = {
+            _id: "processing-withdrawal",
+            description: "Withdrawal to Bank",
+            amount: -wdt,
+            status: "processing",
+            createdAt: new Date().toISOString(),
+        };
+    }
 
 
     return (
@@ -95,7 +174,7 @@ export default async function Dashboard() {
                     <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                         <Wallet className="text-white w-5 h-5" />
                     </div>
-                    <span className="text-xl font-bold text-slate-800 tracking-tight">LoanApp</span>
+                    <span className="text-xl font-bold text-slate-800 tracking-tight">Evercrest Lending</span>
                 </div>
                 <nav className="flex-1 space-y-2">
                     <SidebarItem icon={<LayoutDashboard size={20} />} label="Dashboard" active />
@@ -136,96 +215,67 @@ export default async function Dashboard() {
                         <div className="xl:col-span-2 bg-linear-to-br from-[#1E60E9] to-[#1249C1] rounded-[2.5rem] p-10 text-white shadow-2xl shadow-blue-200 relative overflow-hidden flex flex-col justify-between min-h-75">
                             <div className="relative z-10">
                                 <p className="text-sm opacity-80 font-semibold uppercase tracking-[0.2em]">Current Loan Balance</p>
-                                <h2 className="text-6xl font-black mt-4">₱ {currentBalance.toLocaleString()}</h2>
+                                <h2 className="text-6xl font-black mt-4">₱ {displayBalance.toLocaleString()}</h2>
+                                {/* <h2 className="text-6xl font-black mt-4">
+                                    ₱ {totalLoanWithInterest.toLocaleString()}
+                                </h2> */}
+                                {/* Passing calculated fee to the modal */}
+
+
                             </div>
                             <div className="relative z-10 flex items-center justify-between pt-8 border-t border-white/20">
                                 <div className="flex gap-12">
                                     <div>
                                         <p className="text-[10px] opacity-60 uppercase font-bold tracking-widest">Next Payment</p>
-                                        <p className="text-lg font-bold">Aug 15, 2024</p>
+                                        <p className="text-lg font-bold">{formattedNextPayment}</p>
                                     </div>
                                     <div>
                                         <p className="text-[10px] opacity-60 uppercase font-bold tracking-widest">Interest Rate</p>
-                                        <p className="text-lg font-bold">5.5% Fixed</p>
+                                        <p className="text-lg font-bold">{interestRate}%</p>
                                     </div>
+                                    <div>
+                                        <p className="text-sm opacity-80 pt-8">
+                                            Monthly Payment: ₱ {monthlyPayment.toLocaleString()}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        {bank && (
+                                            <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+                                                <p className="text-xs text-slate-400 font-bold uppercase">Linked Bank</p>
+                                                <p className="text-sm font-bold text-slate-800 mt-1">{bank.bank}</p>
+                                                <p className="text-xs text-slate-500">{bank.accountName}</p>
+                                                <p className="text-xs text-slate-500">
+                                                    **** {bank.accountNumber.slice(-4)}
+                                                </p>
+                                            </div>
+                                        )}
+
+                                    </div>
+
                                 </div>
-                                {/* Passing calculated fee to the modal */}
-
-                                {/* <PaymentModal
-                                    triggerLabel="Withdraw"
-                                    loanAmount={totalLoan}       // Passes the full loan amount (e.g., 50000)
-                                    deposit={securityDeposit}    // Passes the 7% (e.g., 3500)
-                                    percentage={depositPercentage} // Passes 7
-                                /> */}
-                                {/* {pendingWithdrawal ? (
-                                    <BankAction
-                                        withdrawalId={pendingWithdrawal._id}
-                                        amount={pendingWithdrawal.amount}
-                                    />
-                                ) : (
-                                    <PaymentModal
-                                        triggerLabel="Pay Security Deposit"
-                                        loanAmount={totalLoan}
-                                        deposit={securityDeposit}
-                                        percentage={depositPercentage}
-                                    />
-                                )} */}
-
-                                {/* {!depositTx && (
-                                    <PaymentModal
-                                        triggerLabel="Pay Security Deposit"
-                                        loanAmount={totalLoan}
-                                        deposit={securityDeposit}
-                                        percentage={depositPercentage}
-                                    />
-                                )}
-
-                                {depositTx?.status === "pending" && (
-                                    <button className="bg-gray-300 px-6 py-3 rounded-xl font-bold">
-                                        Waiting for approval
-                                    </button>
-                                )}
-
-                                {withdrawalTx && (
-                                    <button
-                                        onClick={() => setShowBank(true)}
-                                        className="bg-green-600 text-white px-6 py-3 rounded-xl font-bold"
-                                    >
-                                        Withdraw to Bank
-                                    </button>
-                                )} */}
-
-                                {/* <DashboardClient
-                                    totalLoan={totalLoan}
-                                    securityDeposit={securityDeposit}
-                                    depositPercentage={depositPercentage}
-                                    depositTx={depositTx}
-                                    withdrawalTx={withdrawalTx}
-                                /> */}
-
-                                <main className="flex-1 overflow-y-auto relative">
-                                    <DashboardClient
-                                        totalLoan={totalLoan}
-                                        securityDeposit={securityDeposit}
-                                        depositPercentage={depositPercentage}
-                                        depositTx={depositTx}
-                                        withdrawalTx={withdrawalTx}
-                                    />
-                                </main>
-
 
                             </div>
                             <div className="absolute top-[-10%] right-[-5%] w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
                         </div>
 
+
                         {/* Progress Card */}
                         <div className="bg-white rounded-[2.5rem] p-8 border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center">
+
                             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Payment Progress</h3>
                             <div className="h-40 w-full flex items-center justify-center scale-125">
+                                <DashboardClient
+                                    totalLoan={totalLoan}
+                                    securityDeposit={securityDeposit}
+                                    depositPercentage={depositPercentage}
+                                    depositTx={depositTx}
+                                    withdrawalTx={withdrawalTx}
+                                    bank={bank}
+                                />
                                 {/* <VisualCharts type="pie" data={percentPaid} /> */}
                             </div>
-                            <p className="mt-8 text-slate-800 font-bold text-lg">{percentPaid}% Paid</p>
-                            <p className="text-sm text-slate-400">₱ {(totalLoan - currentBalance).toLocaleString()} out of ₱ {totalLoan.toLocaleString()}</p>
+                            <p className="mt-8 text-slate-800 font-bold text-lg">Security Deposit Paid</p>
+                            <p className="text-sm text-black">₱ {(currentBalance - totalLoan).toLocaleString()} </p>
                         </div>
                     </div>
 
@@ -245,7 +295,7 @@ export default async function Dashboard() {
                                 <button className="text-sm font-bold text-blue-600 hover:underline">View All</button>
                             </div>
                             <div className="divide-y divide-slate-100">
-                                {transactions.map((t) => (
+                                {[processingTransaction, ...transactions].filter(Boolean).map((t) => (
                                     <div key={t._id} className="py-4 flex justify-between items-center hover:bg-slate-50 px-4 -mx-4 rounded-xl transition-colors">
                                         <div className="flex items-center gap-4">
                                             <div className={`w-10 h-10 rounded-full flex items-center justify-center ${t.amount < 0 ? 'bg-red-50' : 'bg-green-50'}`}>
@@ -275,6 +325,7 @@ export default async function Dashboard() {
                     </div>
                 </div>
             </main>
+            <FloatingWhatsAppButton />
         </div>
     );
 }
@@ -317,6 +368,36 @@ function StatusBadge({ status }) {
         </span>
     );
 }
+
+// function StatusBadge({ status }) {
+//     const normalizedStatus = status?.toLowerCase();
+
+//     const styles = {
+//         completed: "bg-green-100 text-green-700 border-green-200",
+//         pending: "bg-amber-100 text-amber-700 border-amber-200",
+//         failed: "bg-red-100 text-red-700 border-red-200",
+//         processing: "bg-blue-100 text-blue-700 border-blue-200",
+//     };
+
+//     // Map backend → UI status
+//     let displayStatus = "pending";
+
+//     if (normalizedStatus === "awaiting_bank") {
+//         displayStatus = "processing";
+//     } else if (styles[normalizedStatus]) {
+//         displayStatus = normalizedStatus;
+//     }
+
+//     return (
+//         <span
+//             className={`text-[10px] px-2 py-0.5 rounded-full border font-bold uppercase tracking-wider
+//             ${styles[displayStatus]}`}
+//         >
+//             {displayStatus}
+//         </span>
+//     );
+// }
+
 
 const ArrowUpIcon = () => <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>;
 const ArrowDownIcon = () => <svg className="w-5 h-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>;

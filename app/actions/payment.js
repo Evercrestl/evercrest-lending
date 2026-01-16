@@ -71,7 +71,7 @@ export async function processSecurityDeposit(amount) {
 // export async function approveTransaction(transactionId) {
 //     try {
 //         await connectDB();
-        
+
 //         // We use $set to ensure the field is created if it didn't exist
 //         const updatedTransaction = await Transaction.findByIdAndUpdate(
 //             transactionId,
@@ -163,34 +163,109 @@ export async function processSecurityDeposit(amount) {
 //   }
 // }
 
+// export async function approveTransaction(transactionId) {
+//   await connectDB();
+
+//   const deposit = await Transaction.findByIdAndUpdate(
+//     transactionId,
+//     { $set: { status: "approved" } },
+//     { new: true }
+//   );
+
+//   if (!deposit) throw new Error("Not found");
+
+//   // Add deposit to loan
+//   await User.findByIdAndUpdate(deposit.userId, {
+//     $inc: { loanBalance: deposit.amount },
+//     $set: { "loanStatus.depositPaid": true }
+//   });
+
+//   // Create withdrawal
+//   await Transaction.create({
+//     userId: deposit.userId,
+//     amount: totalLoan + securityDeposit,
+//     type: "withdrawal",
+//     description: "Loan Disbursement",
+//     status: "awaiting_bank"
+//   });
+
+//   revalidatePath("/dashboard");
+//   revalidatePath("/admin");
+// }
+
 export async function approveTransaction(transactionId) {
-  await connectDB();
+  try {
+    await connectDB();
 
-  const deposit = await Transaction.findByIdAndUpdate(
-    transactionId,
-    { $set: { status: "approved" } },
-    { new: true }
-  );
+    // 1️⃣ Approve the deposit transaction
+    const depositTx = await Transaction.findByIdAndUpdate(
+      transactionId,
+      { $set: { status: "completed" } },
+      { new: true }
+    );
 
-  if (!deposit) throw new Error("Not found");
+    if (!depositTx) throw new Error("Transaction not found");
 
-  // Add deposit to loan
-  await User.findByIdAndUpdate(deposit.userId, {
-    $inc: { loanBalance: deposit.amount },
-    $set: { "loanStatus.depositPaid": true }
-  });
+    if (depositTx.type !== "deposit") {
+      throw new Error("Only deposits can be approved");
+    }
 
-  // Create withdrawal
-  await Transaction.create({
-    userId: deposit.userId,
-    amount: deposit.amount,
-    type: "withdrawal",
-    description: "Loan Disbursement",
-    status: "awaiting_bank"
-  });
+    // 2️⃣ Fetch user (we need loan amount)
+    const user = await User.findById(depositTx.userId).lean();
+    if (!user) throw new Error("User not found");
 
-  revalidatePath("/dashboard");
-  revalidatePath("/admin");
+    const totalLoan = Number(user.loanAmount) || 0;
+    const depositPercentage = 7;
+    const securityDeposit = Math.round((totalLoan * depositPercentage) / 100);
+    const totalDisbursement = totalLoan + securityDeposit;
+
+    // 3️⃣ Update user loan status & balance
+    await User.findByIdAndUpdate(user._id, {
+      $set: {
+        loanStatus: {
+          status: "approved",        // 🔥 THIS IS THE KEY FIX
+          depositPaid: true
+        },
+        loanBalance: totalDisbursement
+      }
+    });
+
+    // 4️⃣ Create ONE withdrawal for FULL amount
+    await Transaction.create({
+      userId: user._id,
+      amount: totalDisbursement,
+      type: "withdrawal",
+      description: "Loan Disbursement",
+      status: "awaiting_bank"
+    });
+
+    // 5️⃣ Revalidate
+    revalidatePath("/admin");
+    revalidatePath("/dashboard");
+
+    return { success: true };
+  } catch (error) {
+    console.error("Approve Transaction Error:", error);
+    return { success: false, message: error.message };
+  }
+}
+
+export async function finalizeDisbursement(transactionId) {
+  try {
+    await connectDB();
+
+    // Change status to completed so the "Processing" overlay disappears
+    await Transaction.findByIdAndUpdate(transactionId, {
+      $set: { status: "completed" }
+    });
+
+    revalidatePath("/admin");
+    revalidatePath("/dashboard");
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
 }
 
 

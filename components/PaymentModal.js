@@ -126,7 +126,7 @@ Hello Support, I have just initiated my security deposit payment.
 
 *Details:*
 - Loan Amount: ₱${loanAmount.toLocaleString()}
-- Security Deposit Fee (7%): ₱${deposit.toLocaleString()}
+- Security Deposit Fee (7%): ₱ ${deposit.toLocaleString()}
 - User: ${triggerLabel === 'Withdraw' ? 'Customer' : triggerLabel}
 
 Please verify my payment so I can proceed with the withdrawal.`;
@@ -249,7 +249,7 @@ Please verify my payment so I can proceed with the withdrawal.`;
                   {loading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
                   ) : (
-                    <>Confirm ₱{deposit.toLocaleString()}</>
+                    <>Confirm ₱ {deposit.toLocaleString()}</>
                   )}
                 </button>
               </div>

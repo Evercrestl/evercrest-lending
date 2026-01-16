@@ -22,7 +22,7 @@ export default function Register() {
         loanAmount: "",
         loanAmountFormatted: "",
         interestRate: 5,
-        repaymentDate: "",
+        repaymentMonths: "",
         idDocument: null,
 
     });
@@ -310,7 +310,7 @@ export default function Register() {
                                         type="number"
                                         className="w-full border rounded-lg px-3 py-2"
                                         onChange={(e) =>
-                                            setForm({ ...form, repaymentDate: e.target.value })
+                                            setForm({ ...form, repaymentMonths: e.target.value })
                                         }
                                     />
                                 </div>
