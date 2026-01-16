@@ -142,7 +142,7 @@ export default function Register() {
 
                             {/* Age & Gender */}
                             <div className="grid grid-cols-2 gap-4">
-                                <div>
+                                {/* <div>
                                     <label className="block text-sm font-medium text-gray-600 mb-1">
                                         Age
                                     </label>
@@ -153,6 +153,22 @@ export default function Register() {
                            focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                         placeholder="25"
                                         onChange={(e) => setForm({ ...form, age: e.target.value })}
+                                    />
+                                </div> */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                                        Date of Birth (DD/MM/YYYY)
+                                    </label>
+                                    <input
+                                        type="date"
+                                        placeholder="DD/MM/YYYY"
+                                        pattern="\d{2}/\d{2}/\d{4}"
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm
+                   focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                        onChange={(e) => {
+                                            // Logic to handle the string input
+                                            setForm({ ...form, dob: e.target.value });
+                                        }}
                                     />
                                 </div>
 
@@ -317,7 +333,7 @@ export default function Register() {
                                 <div className="mt-2 p-2 bg-green-50 rounded-lg text-green-700 font-medium">
                                     Total Repayment:{" "}
                                     <span>
-                                         ₱
+                                        ₱
                                         {form.loanAmount && form.repaymentMonths
                                             ? (
                                                 form.loanAmount *
