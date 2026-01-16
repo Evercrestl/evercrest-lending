@@ -212,12 +212,12 @@ export default async function Dashboard() {
                 <div className="p-8 max-w-7xl mx-auto space-y-8">
                     <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                         {/* Hero Card */}
-                        <div className="xl:col-span-2 bg-linear-to-br from-[#1E60E9] to-[#1249C1] rounded-[2.5rem] p-10 text-white shadow-2xl shadow-blue-200 relative overflow-hidden flex flex-col justify-between min-h-75">
+                        {/* <div className="xl:col-span-2 bg-linear-to-br from-[#1E60E9] to-[#1249C1] rounded-[2.5rem] p-10 text-white shadow-2xl shadow-blue-200 relative overflow-hidden flex flex-col justify-between min-h-75">
                             <div className="relative z-10">
                                 <p className="text-sm opacity-80 font-semibold uppercase tracking-[0.2em]">Current Loan Balance</p>
                                 <h2 className="text-6xl font-black mt-4">₱ {displayBalance.toLocaleString()}</h2>
                             </div>
-                            <div className="relative z-10 flex items-center justify-between pt-8 border-t border-white/20">
+                            <div className="relative z-10 flex items-center justify-between pt-8 border-t">
                                 <div className="flex gap-12">
                                     <div>
                                         <p className="text-[10px] opacity-60 uppercase font-bold tracking-widest">Next Payment</p>
@@ -250,8 +250,94 @@ export default async function Dashboard() {
                                 </div>
 
                             </div>
-                            <div className="absolute top-[-10%] right-[-5%] w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-                        </div>
+                            {/* <div className="absolute top-[-10%] right-[-5%] w-64 h-64 bg-white rounded-full blur-3xl"></div> */}
+                        {/* </div> */} 
+
+                        <div className="
+  xl:col-span-2
+  bg-linear-to-br from-[#1E60E9] to-[#1249C1]
+  rounded-3xl
+  p-6 sm:p-8 lg:p-10
+  text-white
+  shadow-2xl shadow-blue-200
+  relative
+  overflow-hidden
+  flex flex-col
+  justify-between
+  min-h-72
+  max-w-full
+">
+  {/* Top */}
+  <div className="relative z-10">
+    <p className="text-xs sm:text-sm opacity-80 font-semibold uppercase tracking-widest">
+      Current Loan Balance
+    </p>
+
+    <h2 className="text-3xl sm:text-4xl lg:text-6xl font-black mt-4 break-all">
+      ₱ {displayBalance.toLocaleString()}
+    </h2>
+  </div>
+
+  {/* Bottom */}
+  <div className="
+    relative z-10
+    pt-6
+    border-t border-white/20
+    flex flex-col gap-6
+  ">
+    <div className="
+      grid grid-cols-1
+      sm:grid-cols-2
+      lg:grid-cols-4
+      gap-6
+    ">
+      <div>
+        <p className="text-[10px] opacity-60 uppercase font-bold tracking-widest">
+          Next Payment
+        </p>
+        <p className="text-sm sm:text-md font-bold mt-2">
+          {formattedNextPayment}
+        </p>
+      </div>
+
+      <div>
+        <p className="text-[10px] opacity-60 uppercase font-bold tracking-widest">
+          Interest Rate
+        </p>
+        <p className="text-base sm:text-lg font-bold">
+          {interestRate}%
+        </p>
+      </div>
+
+      <div>
+        <p className="text-[10px] opacity-60 uppercase font-bold tracking-widest">
+          Monthly Payment
+        </p>
+        <p className="text-base sm:text-lg font-bold break-all">
+          ₱ {monthlyPayment.toLocaleString()}
+        </p>
+      </div>
+
+      {bank && (
+        <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm text-slate-800">
+          <p className="text-xs text-slate-400 font-bold uppercase">
+            Linked Bank
+          </p>
+          <p className="text-sm font-bold mt-1">
+            {bank.bank}
+          </p>
+          <p className="text-xs text-slate-500">
+            {bank.accountName}
+          </p>
+          <p className="text-xs text-slate-500 break-all">
+            **** {bank.accountNumber.slice(-4)}
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+
 
 
                         {/* Progress Card */}
