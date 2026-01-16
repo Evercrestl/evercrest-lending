@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PaymentModal from "@/components/PaymentModal";
 import BankAction from "@/components/BankSelect";
 
@@ -15,6 +15,17 @@ export default function DashboardClient({
   const [showBank, setShowBank] = useState(false);
   const isActivelyProcessing = withdrawalTx?.status === "awaiting_bank";
   const isProcessing = Boolean(bank || withdrawalTx);
+
+  const [spinning, setSpinning] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSpinning(false);
+    }, 40000); // 40 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+  if (!spinning) return <h1>Your Transfer is currently Processing</h1>;
 
   return (
     <>
