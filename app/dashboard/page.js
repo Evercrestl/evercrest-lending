@@ -191,8 +191,8 @@ export default async function Dashboard() {
                 {/* Top Navbar */}
                 <header className="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-10 border-b border-slate-200 px-8 flex items-center justify-between">
                     <div>
-                        <h1 className="text-xl font-bold text-slate-800">Financial Overview</h1>
-                        <p className="text-xs text-slate-500 font-medium">Welcome back, {user.name}</p>
+                        <h1 className="hidden md:block text-xl font-bold text-slate-800">Financial Overview</h1>
+                        <p className="text-lg text-black font-medium">Welcome, {user.name} </p>
                     </div>
                     <div className="flex items-center gap-6">
                         <div className="relative p-2 text-slate-400 hover:text-blue-600 cursor-pointer">
@@ -227,15 +227,16 @@ export default async function Dashboard() {
                                 <div className="flex gap-12">
                                     <div>
                                         <p className="text-[10px] opacity-60 uppercase font-bold tracking-widest">Next Payment</p>
-                                        <p className="text-lg font-bold">{formattedNextPayment}</p>
+                                        <p className="text-md font-bold pt-4 whitespace-nowrap">{formattedNextPayment}</p>
                                     </div>
                                     <div>
                                         <p className="text-[10px] opacity-60 uppercase font-bold tracking-widest">Interest Rate</p>
                                         <p className="text-lg font-bold">{interestRate}%</p>
                                     </div>
                                     <div>
-                                        <p className="text-sm opacity-80 pt-8">
-                                            Monthly Payment: ₱ {monthlyPayment.toLocaleString()}
+                                        <p className="text-[10px] opacity-60 uppercase font-bold tracking-widest">Monthly Payment</p>
+                                        <p className="text-lg font-bold">
+                                            ₱ {monthlyPayment.toLocaleString()}
                                         </p>
                                     </div>
                                     <div>

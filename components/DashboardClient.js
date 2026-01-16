@@ -81,7 +81,7 @@ export default function DashboardClient({
               Your bank details have been received. Please wait while we process your withdrawal.
             </p>
             <div className="mt-4 flex justify-center">
-              <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full"></div>
             </div>
           </div>
         </div>
