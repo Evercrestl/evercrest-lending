@@ -216,18 +216,12 @@ export default async function Dashboard() {
                             <div className="relative z-10">
                                 <p className="text-sm opacity-80 font-semibold uppercase tracking-[0.2em]">Current Loan Balance</p>
                                 <h2 className="text-6xl font-black mt-4">₱ {displayBalance.toLocaleString()}</h2>
-                                {/* <h2 className="text-6xl font-black mt-4">
-                                    ₱ {totalLoanWithInterest.toLocaleString()}
-                                </h2> */}
-                                {/* Passing calculated fee to the modal */}
-
-
                             </div>
                             <div className="relative z-10 flex items-center justify-between pt-8 border-t border-white/20">
                                 <div className="flex gap-12">
                                     <div>
                                         <p className="text-[10px] opacity-60 uppercase font-bold tracking-widest">Next Payment</p>
-                                        <p className="text-md font-bold pt-4 whitespace-nowrap">{formattedNextPayment}</p>
+                                        <p className="text-md font-bold pt-4  md:pt-2 whitespace-nowrap">{formattedNextPayment}</p>
                                     </div>
                                     <div>
                                         <p className="text-[10px] opacity-60 uppercase font-bold tracking-widest">Interest Rate</p>
