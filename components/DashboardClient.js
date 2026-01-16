@@ -63,7 +63,7 @@ export default function DashboardClient({
       )} */}
 
       {isActivelyProcessing && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="bg-white rounded-2xl p-6 shadow-xl text-center max-w-sm w-full">
             <h3 className="text-lg font-bold text-slate-800">Withdrawal Processing</h3>
             <p className="text-sm text-slate-500 mt-2">
