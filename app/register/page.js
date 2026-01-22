@@ -112,21 +112,21 @@ export default function Register() {
         }
 
         // ✅ Auto-login
-        const loginRes = await fetch("/api/auth/login", {
-            method: "POST",
-            body: JSON.stringify({
-                email: form.email,
-                password: form.password
-            }),
-            headers: { "Content-Type": "application/json" }
-        });
+        // const loginRes = await fetch("/api/auth/login", {
+        //     method: "POST",
+        //     body: JSON.stringify({
+        //         email: form.email,
+        //         password: form.password
+        //     }),
+        //     headers: { "Content-Type": "application/json" }
+        // });
 
-        if (loginRes.ok) {
-            toast.success("Logged in!");
-            router.push("/dashboard");
-        } else {
-            router.push("/login");
-        }
+        // if (loginRes.ok) {
+        //     toast.success("Logged in!");
+        //     router.push("/dashboard");
+        // } else {
+        //     router.push("/login");
+        // }
 
         setLoading(false);
     };
