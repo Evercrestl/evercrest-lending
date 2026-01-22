@@ -347,6 +347,7 @@ export default async function Dashboard() {
                             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Payment Progress</h3>
                             <div className="h-40 w-full flex items-center justify-center scale-125">
                                 <DashboardClient
+                                    user={user}
                                     totalLoan={totalLoan}
                                     securityDeposit={securityDeposit}
                                     depositPercentage={depositPercentage}

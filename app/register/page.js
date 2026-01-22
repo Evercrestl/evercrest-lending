@@ -30,6 +30,7 @@ export default function Register() {
     });
 
     const [loading, setLoading] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     // const calculateAge = (dob) => {
     //     if (!dob) return 0;
@@ -87,6 +88,7 @@ export default function Register() {
             setLoading(false);
             return;
         }
+        setShowSuccessModal(true);
 
         toast.success("Account created successfully!");
 
@@ -530,6 +532,28 @@ export default function Register() {
 
 
             </div>
+            {/* Success Modal Overlay */}
+            {showSuccessModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+                    <div className="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl animate-in fade-in zoom-in duration-300">
+                        <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
+                            <svg className="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <h2 className="text-2xl font-bold text-gray-800 mb-2">Success!</h2>
+                        <p className="text-gray-600 mb-6">
+                            Your loan amount of <span className="font-semibold text-gray-900">{form.loanAmountFormatted}</span> has been approved.
+                        </p>
+                        <button
+                            onClick={() => router.push("/dashboard")}
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-xl transition-all shadow-lg active:scale-95"
+                        >
+                            Go to Dashboard
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
