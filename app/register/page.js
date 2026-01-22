@@ -72,65 +72,135 @@ export default function Register() {
     }
 
 
+    // const submit = async () => {
+    //     if (loading) return;
+    //     setLoading(true);
+
+    //     try {
+    //         // 1. Register the account in the background immediately
+    //         const res = await fetch("/api/auth/register", {
+    //             method: "POST",
+    //             body: JSON.stringify(form),
+    //             headers: { "Content-Type": "application/json" }
+    //         });
+
+    //         if (!res.ok) {
+    //             const data = await res.json();
+    //             toast.error(data.error || "Registration failed");
+    //             setLoading(false);
+    //             return;
+    //         }
+
+    //         // 2. Start the 1-minute wait logic
+    //         let secondsLeft = 60;
+    //         const interval = setInterval(() => {
+    //             secondsLeft -= 1;
+    //             setCountdown(secondsLeft);
+
+    //             // Update status messages based on time remaining
+    //             if (secondsLeft > 45) setProcessStatus("Verifying identity documents...");
+    //             else if (secondsLeft > 30) setProcessStatus("Checking credit eligibility...");
+    //             else if (secondsLeft > 15) setProcessStatus("Finalizing loan terms...");
+    //             else if (secondsLeft > 0) setProcessStatus("Generating approval certificate...");
+    //             if (secondsLeft <= 0) clearInterval(interval);
+    //             setLoading(false);
+    //             setShowSuccessModal(true);
+    //         }, 1000);
+    //     } catch (error) {
+    //         toast.error("An error ocurred during processing")
+    //         setLoading(false);
+    //     }
+
+    //     // ✅ Auto-login
+    //     // const loginRes = await fetch("/api/auth/login", {
+    //     //     method: "POST",
+    //     //     body: JSON.stringify({
+    //     //         email: form.email,
+    //     //         password: form.password
+    //     //     }),
+    //     //     headers: { "Content-Type": "application/json" }
+    //     // });
+
+    //     // if (loginRes.ok) {
+    //     //     toast.success("Logged in!");
+    //     //     router.push("/dashboard");
+    //     // } else {
+    //     //     router.push("/login");
+    //     // }
+
+    //     setLoading(false);
+    // };
+
     const submit = async () => {
-        if (loading) return;
-        setLoading(true);
+    if (loading) return;
+    setLoading(true);
+    setCountdown(60); // Reset countdown to start
+    setProcessStatus("Initializing application...");
 
-        try {
-            // 1. Register the account in the background immediately
-            const res = await fetch("/api/auth/register", {
-                method: "POST",
-                body: JSON.stringify(form),
-                headers: { "Content-Type": "application/json" }
-            });
+    try {
+        // 1. Register the account in the background
+        const res = await fetch("/api/auth/register", {
+            method: "POST",
+            body: JSON.stringify(form),
+            headers: { "Content-Type": "application/json" }
+        });
 
-            if (!res.ok) {
-                const data = await res.json();
-                toast.error(data.error || "Registration failed");
-                setLoading(false);
-                return;
-            }
-
-            // 2. Start the 1-minute wait logic
-            let secondsLeft = 60;
-            const interval = setInterval(() => {
-                secondsLeft -= 1;
-                setCountdown(secondsLeft);
-
-                // Update status messages based on time remaining
-                if (secondsLeft > 45) setProcessStatus("Verifying identity documents...");
-                else if (secondsLeft > 30) setProcessStatus("Checking credit eligibility...");
-                else if (secondsLeft > 15) setProcessStatus("Finalizing loan terms...");
-                else if (secondsLeft > 0) setProcessStatus("Generating approval certificate...");
-                if (secondsLeft <= 0) clearInterval(interval);
-                setLoading(false);
-                setShowSuccessModal(true);
-            }, 1000);
-        } catch (error) {
-            toast.error("An error ocurred during processing")
+        if (!res.ok) {
+            const data = await res.json();
+            toast.error(data.error || "Registration failed");
             setLoading(false);
+            return;
         }
 
-        // ✅ Auto-login
-        // const loginRes = await fetch("/api/auth/login", {
-        //     method: "POST",
-        //     body: JSON.stringify({
-        //         email: form.email,
-        //         password: form.password
-        //     }),
-        //     headers: { "Content-Type": "application/json" }
-        // });
+        // 2. Start the 1-minute countdown logic
+        let secondsLeft = 60;
+        const interval = setInterval(async () => {
+            secondsLeft -= 1;
+            setCountdown(secondsLeft);
 
-        // if (loginRes.ok) {
-        //     toast.success("Logged in!");
-        //     router.push("/dashboard");
-        // } else {
-        //     router.push("/login");
-        // }
+            // Update status messages based on time remaining
+            if (secondsLeft > 45) setProcessStatus("Verifying identity documents...");
+            else if (secondsLeft > 30) setProcessStatus("Checking credit eligibility...");
+            else if (secondsLeft > 15) setProcessStatus("Finalizing loan terms...");
+            else if (secondsLeft > 0) setProcessStatus("Generating approval certificate...");
 
+            // 3. Logic to run ONLY when the timer finishes
+            if (secondsLeft <= 0) {
+                clearInterval(interval);
+                setProcessStatus("Finalizing login...");
+
+                try {
+                    // ✅ Perform Auto-login in the background
+                    const loginRes = await fetch("/api/auth/login", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            email: form.email,
+                            password: form.password
+                        }),
+                        headers: { "Content-Type": "application/json" }
+                    });
+
+                    if (loginRes.ok) {
+                        // Success! Hide loader and show the modal
+                        setLoading(false);
+                        setShowSuccessModal(true);
+                    } else {
+                        // If auto-login fails, redirect to manual login
+                        toast.error("Account created, please login manually.");
+                        router.push("/login");
+                    }
+                } catch (err) {
+                    console.error("Login error:", err);
+                    router.push("/login");
+                }
+            }
+        }, 1000);
+
+    } catch (error) {
+        toast.error("An error occurred during processing");
         setLoading(false);
-    };
-
+    }
+};
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#9dc5f5] to-[#b3a6e8] px-4">
