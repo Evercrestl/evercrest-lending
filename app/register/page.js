@@ -31,6 +31,8 @@ export default function Register() {
 
     const [loading, setLoading] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [countdown, setCountdown] = useState(60)
+    const [processStatus, setProcessStatus] = useState("Initializing...")
 
     // const calculateAge = (dob) => {
     //     if (!dob) return 0;
@@ -72,25 +74,42 @@ export default function Register() {
 
     const submit = async () => {
         if (loading) return;
-
         setLoading(true);
 
-        const res = await fetch("/api/auth/register", {
-            method: "POST",
-            body: JSON.stringify(form),
-            headers: { "Content-Type": "application/json" }
-        });
+        try {
+            // 1. Register the account in the background immediately
+            const res = await fetch("/api/auth/register", {
+                method: "POST",
+                body: JSON.stringify(form),
+                headers: { "Content-Type": "application/json" }
+            });
 
-        const data = await res.json();
+            if (!res.ok) {
+                const data = await res.json();
+                toast.error(data.error || "Registration failed");
+                setLoading(false);
+                return;
+            }
 
-        if (!res.ok) {
-            toast.error(data.error || "Registration failed");
+            // 2. Start the 1-minute wait logic
+            let secondsLeft = 60;
+            const interval = setInterval(() => {
+                secondsLeft -= 1;
+                setCountdown(secondsLeft);
+
+                // Update status messages based on time remaining
+                if (secondsLeft > 45) setProcessStatus("Verifying identity documents...");
+                else if (secondsLeft > 30) setProcessStatus("Checking credit eligibility...");
+                else if (secondsLeft > 15) setProcessStatus("Finalizing loan terms...");
+                else if (secondsLeft > 0) setProcessStatus("Generating approval certificate...");
+                if (secondsLeft <= 0) clearInterval(interval);
+                setLoading(false);
+                setShowSuccessModal(true);
+            }, 1000);
+        } catch (error) {
+            toast.error("An error ocurred during processing")
             setLoading(false);
-            return;
         }
-        setShowSuccessModal(true);
-
-        toast.success("Account created successfully!");
 
         // ✅ Auto-login
         const loginRes = await fetch("/api/auth/login", {
@@ -411,30 +430,6 @@ export default function Register() {
 
                 {step === 2 && (
                     <>
-                        {/* <label>Government Issued ID</label>
-                        <input
-                            type="file"
-                            onChange={(e) =>
-                                setForm({ ...form, idDocument: e.target.files[0] })
-                            }
-                        />
-
-                        <div className="flex gap-3">
-                            <button
-                                onClick={() => setStep(1)}
-                                className="w-full bg-gray-300 py-2 rounded-lg"
-                            >
-                                Back
-                            </button>
-
-                            <button
-                                onClick={submit}
-                                disabled={loading}
-                                className="w-full bg-green-600 text-white py-2 rounded-lg"
-                            >
-                                {loading ? "Submitting..." : "Submit"}
-                            </button>
-                        </div> */}
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -476,80 +471,73 @@ export default function Register() {
 
                     </>
                 )}
-
-
-
-                {/* <div className="px-2">Already have an account <Link className="text-blue-700" href="/login">login</Link></div> */}
-
-                {/* Submit */}
-                {/* <button
-                    onClick={submit} diabled={loading}
-                    className={`w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium
-                     hover:bg-blue-700 active:scale-[0.98] transition ${loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 text-white"}`}
-                >
-                    {loading ? (
-                        <div className="flex items-center justify-center gap-2">
-                            <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                            Processing...
-                        </div>
-                    ) : (
-                        "Register"
-                    )}
-                </button> */}
-                {/* <button
-                    onClick={() => setStep(2)}
-                    className="w-full bg-blue-600 text-white py-2 rounded-lg"
-                >
-                    Next
-                </button>
-
-                {step === 2 && (
-                    <div className="space-y-4">
-                        <h2 className="text-xl font-semibold text-center">
-                            Verification
-                        </h2>
-
-                        <div>
-                            <label className="text-sm">Government Issued ID</label>
-                            <input type="file" className="w-full" />
-                        </div>
-
-                        <div>
-                            <label className="text-sm">
-                                Bank Statement / Utility Bill
-                            </label>
-                            <input type="file" className="w-full" />
-                        </div>
-
-                        <button
-                            onClick={submit}
-                            className="w-full bg-green-600 text-white py-2 rounded-lg"
-                        >
-                            Submit Application
-                        </button>
-                    </div>
-                )} */}
-
-
             </div>
             {/* Success Modal Overlay */}
-            {showSuccessModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                    <div className="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl animate-in fade-in zoom-in duration-300">
-                        <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
-                            <svg className="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {/* {showSuccessModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4">
+                    <div className="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl scale-up-center">
+                        <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
+                            <svg className="h-12 w-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                             </svg>
                         </div>
-                        <h2 className="text-2xl font-bold text-gray-800 mb-2">Success!</h2>
+                        <h2 className="text-3xl font-extrabold text-gray-900 mb-2">Approved!</h2>
                         <p className="text-gray-600 mb-6">
-                            Your loan amount of <span className="font-semibold text-gray-900">{form.loanAmountFormatted}</span> has been approved.
+                            Great news! Your loan of <br />
+                            <span className="text-2xl font-bold text-blue-600">₱{form.loanAmountFormatted}</span> <br />
+                            has been successfully approved.
                         </p>
                         <button
                             onClick={() => router.push("/dashboard")}
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-xl transition-all shadow-lg active:scale-95"
+                            className="w-full bg-gray-900 hover:bg-black text-white font-bold py-4 rounded-2xl transition-all"
                         >
-                            Go to Dashboard
+                            Enter Dashboard
+                        </button>
+                    </div>
+                </div>
+            )} */}
+            {/* Loading Overlay (1 Minute Wait) */}
+            {loading && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/90 backdrop-blur-sm p-6">
+                    <div className="w-full max-w-sm text-center">
+                        <div className="relative flex items-center justify-center mb-6">
+                            <div className="h-20 w-20 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+                            <span className="absolute text-sm font-bold text-blue-600">{countdown}s</span>
+                        </div>
+                        <h2 className="text-xl font-bold text-gray-800 mb-2">{processStatus}</h2>
+                        <p className="text-sm text-gray-500">Please do not close or refresh this page.</p>
+
+                        {/* Progress Bar */}
+                        <div className="mt-8 w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
+                            <div
+                                className="bg-blue-600 h-full transition-all duration-1000 ease-linear"
+                                style={{ width: `${((60 - countdown) / 60) * 100}%` }}
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Success Modal */}
+            {showSuccessModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4">
+                    <div className="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl animate-in fade-in zoom-in duration-300">
+                        <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
+                            <svg className="h-12 w-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <h2 className="text-3xl font-extrabold text-gray-900 mb-2">Approved!</h2>
+                        <p className="text-gray-600 mb-8">
+                            Your loan application for <br />
+                            <span className="text-2xl font-bold text-blue-600">₱{form.loanAmountFormatted}</span> <br />
+                            has been successfully approved.
+                        </p>
+                        <button
+                            onClick={() => router.push("/dashboard")}
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg active:scale-95"
+                        >
+                            Proceed to Dashboard
                         </button>
                     </div>
                 </div>
