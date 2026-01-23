@@ -10,6 +10,8 @@ const navLinks = [
   { label: "Services", href: "#services" },
   { label: "About us", href: "#about" },
   { label: "Contact us", href: "#contact" },
+  { label: "Register", href: "/register" },
+  { label: "Login", href: "/login" },
 ];
 
 const benefits = [
@@ -60,12 +62,12 @@ export default function HomePage() {
   const [open, setOpen] = useState(false);
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 font-sans space-y-16">
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 font-sans space-y-4">
 
       {/* ===== HEADER ===== */}
       <header className="flex items-center justify-between py-6">
         <Image
-          src="/images/evercrestl-logo.png"
+          src="/logo.png"
           width={160}
           height={50}
           alt="Evercrest Lending"
@@ -81,14 +83,21 @@ export default function HomePage() {
           ))}
         </nav>
 
-        {/* Mobile Menu Button */}
-        <button
+        {/* Mobile Login/Register Links */}
+        <div className="flex md:hidden items-center gap-3 text-sm font-medium">
+          <Link href="/login" className="text-sm font-medium">Login</Link>
+          <Link href="/register" className="px-3 py-1.5 bg-blue-600 text-white rounded">
+            Register
+          </Link>
+          <button
           className="md:hidden"
           onClick={() => setOpen(!open)}
           aria-label="Toggle Menu"
         >
           {open ? <X size={28} /> : <Menu size={28} />}
         </button>
+        </div>
+        {/* Mobile Menu Button */}
       </header>
 
       {/* Mobile Nav */}
@@ -109,6 +118,14 @@ export default function HomePage() {
 
       {/* ===== HERO ===== */}
       <section id="home" className="text-center space-y-6">
+        <div className="relative w-full h-96 sm:h-125 lg:h-150 mb-6 rounded-lg overflow-hidden">
+          <Image
+            src="/home.png"
+            fill
+            alt="Evercrest Lending"
+            className="object-cover"
+          />
+        </div>
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
           Welcome to Evercrest Lending
         </h1>
@@ -116,7 +133,9 @@ export default function HomePage() {
           Where trust and convenience come together. Enjoy fast and secure loans with repayment options designed specifically for you.
         </p>
         <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold">
-          Apply Now
+          <Link href="/register" className="text-white rounded">
+            Apply Now
+          </Link>
         </button>
       </section>
 
