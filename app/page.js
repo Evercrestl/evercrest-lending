@@ -126,11 +126,13 @@ export default function HomePage() {
             className="object-cover"
           />
         </div>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
-          Welcome to Evercrest Lending
-        </h1>
+        <div className="max-w-2xl">
+        <h2 className="text-6xl leading-none sm:text-4xl lg:text-5xl font-bold">
+          Get Money in Minutes!
+        </h2>
+        </div>
         <p className="text-base sm:text-xl text-gray-700 max-w-3xl mx-auto">
-          Where trust and convenience come together. Enjoy fast and secure loans with repayment options designed specifically for you.
+          Access quick and affordable finance to fuel your hustle or attend to urgent needs. Join Philippine’s 1st Credit Membership.
         </p>
         <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold">
           <Link href="/register" className="text-white rounded">
@@ -172,9 +174,9 @@ export default function HomePage() {
               />
               <h4 className="text-xl font-semibold">{loan.title}</h4>
               <p className="text-gray-600">{loan.desc}</p>
-              <button className="text-blue-600 font-medium">
+              {/* <button className="text-blue-600 font-medium">
                 Apply Now
-              </button>
+              </button> */}
             </div>
           ))}
         </div>
