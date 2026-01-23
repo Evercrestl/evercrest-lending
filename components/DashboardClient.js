@@ -247,7 +247,7 @@ export default function DashboardClient({
   const isAwaitingWithdrawal = withdrawalTx?.status === "awaiting_bank";
 
   return (
-    <div className="p-6 flex flex-col items-center justify-center min-h-screen bg-gray-50">
+    <div className="p-4 flex flex-col items-center justify-center min-h-screen bg-gray-50">
       
       {/* THE PERSISTENT CARD CONTAINER */}
       <div className="bg-white rounded-3xl p-8 shadow-xl max-w-md w-full border border-gray-100 min-h-75 flex flex-col items-center justify-center text-center">

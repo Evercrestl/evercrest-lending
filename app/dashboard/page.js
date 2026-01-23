@@ -289,7 +289,7 @@ export default async function Dashboard() {
 
 
                         {/* Progress Card */}
-                        <div className="rounded-[2.5rem] p-8 border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center">
+                        <div className="p-2 shadow-sm flex flex-col items-center justify-center text-center">
 
                             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Payment Progress</h3>
                             <div className="h-80 w-full flex items-center justify-center">
@@ -303,7 +303,7 @@ export default async function Dashboard() {
                                     bank={bank}
                                 />
                             </div>
-                            <p className="mt-8 text-slate-800 font-bold text-lg">Security Deposit Paid</p>
+                            <p className="mt-4 text-slate-800 font-bold text-lg">Security Deposit Paid</p>
                             <p className="text-sm text-black">₱ {(currentBalance - totalLoan).toLocaleString()} </p>
                         </div>
                     </div>
