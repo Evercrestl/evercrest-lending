@@ -13,7 +13,7 @@ export default function CurrencyInput({
   const formatCurrency = (num) => {
     if (!num) return "";
     const number = Number(num);
-    return "₱ " + number.toLocaleString("en-PH", {
+    return " " + number.toLocaleString("en-PH", {
       style: "currency",
       minimumFractionDigits: 2,
     });
@@ -22,7 +22,7 @@ export default function CurrencyInput({
   // Format while typing → 50,000 (NO ₱, NO decimals)
   const formatTyping = (num) => {
     if (!num) return "";
-    return "₱ " + Number(num).toLocaleString("en-PH");
+    return " " + Number(num).toLocaleString("en-PH");
   };
 
   // Remove formatting → "50000"

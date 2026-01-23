@@ -3,6 +3,8 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Autocomplete from "react-google-autocomplete";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import CurrencyInput from "@/components/CurrencyInput";
 
 export default function Register() {
@@ -14,6 +16,7 @@ export default function Register() {
         name: "",
         email: "",
         password: "",
+        phoneNumber: "",
         dateOfBirth: "",
         gender: "",
         workStatus: "",
@@ -34,23 +37,9 @@ export default function Register() {
     const [countdown, setCountdown] = useState(60)
     const [processStatus, setProcessStatus] = useState("Initializing...")
 
-    // const calculateAge = (dob) => {
-    //     if (!dob) return 0;
-    //     const birthDate = new Date(dob);
-    //     const today = new Date();
-
-    //     let age = today.getFullYear() - birthDate.getFullYear();
-    //     const m = today.getMonth() - birthDate.getMonth();
-
-    //     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-    //         age--;
-    //     }
-
-    //     return age;
-    // };
 
     const goToStep2 = () => {
-        if (!form.name || !form.email || !form.password || !form.dateOfBirth || !form.gender || !form.workStatus || !form.loanType || !form.loanAmount || !form.loanAmountFormatted || !form.interestRate || !form.repaymentMonths) {
+        if (!form.name || !form.email || !form.password || !form.phoneNumber || !form.dateOfBirth || !form.gender || !form.workStatus || !form.loanType || !form.loanAmount || !form.loanAmountFormatted || !form.interestRate || !form.repaymentMonths) {
             toast.error("Please fill all required fields");
             return;
         }
@@ -58,149 +47,79 @@ export default function Register() {
             toast.error("Please specify your work status");
             return;
         }
-        if (!form.dateOfBirth) {
-            toast.error("Date of birth is required");
-            return;
-        }
-
-        // const age = calculateAge(form.dateOfBirth);
-        // if (age < 18) {
-        //     toast.error("You must be at least 18 years old");
-        //     return;
-        // }
         setStep(2)
     }
 
-
-    // const submit = async () => {
-    //     if (loading) return;
-    //     setLoading(true);
-
-    //     try {
-    //         // 1. Register the account in the background immediately
-    //         const res = await fetch("/api/auth/register", {
-    //             method: "POST",
-    //             body: JSON.stringify(form),
-    //             headers: { "Content-Type": "application/json" }
-    //         });
-
-    //         if (!res.ok) {
-    //             const data = await res.json();
-    //             toast.error(data.error || "Registration failed");
-    //             setLoading(false);
-    //             return;
-    //         }
-
-    //         // 2. Start the 1-minute wait logic
-    //         let secondsLeft = 60;
-    //         const interval = setInterval(() => {
-    //             secondsLeft -= 1;
-    //             setCountdown(secondsLeft);
-
-    //             // Update status messages based on time remaining
-    //             if (secondsLeft > 45) setProcessStatus("Verifying identity documents...");
-    //             else if (secondsLeft > 30) setProcessStatus("Checking credit eligibility...");
-    //             else if (secondsLeft > 15) setProcessStatus("Finalizing loan terms...");
-    //             else if (secondsLeft > 0) setProcessStatus("Generating approval certificate...");
-    //             if (secondsLeft <= 0) clearInterval(interval);
-    //             setLoading(false);
-    //             setShowSuccessModal(true);
-    //         }, 1000);
-    //     } catch (error) {
-    //         toast.error("An error ocurred during processing")
-    //         setLoading(false);
-    //     }
-
-    //     // ✅ Auto-login
-    //     // const loginRes = await fetch("/api/auth/login", {
-    //     //     method: "POST",
-    //     //     body: JSON.stringify({
-    //     //         email: form.email,
-    //     //         password: form.password
-    //     //     }),
-    //     //     headers: { "Content-Type": "application/json" }
-    //     // });
-
-    //     // if (loginRes.ok) {
-    //     //     toast.success("Logged in!");
-    //     //     router.push("/dashboard");
-    //     // } else {
-    //     //     router.push("/login");
-    //     // }
-
-    //     setLoading(false);
-    // };
-
     const submit = async () => {
-    if (loading) return;
-    setLoading(true);
-    setCountdown(60); // Reset countdown to start
-    setProcessStatus("Initializing application...");
+        if (loading) return;
+        setLoading(true);
+        setCountdown(60); // Reset countdown to start
+        setProcessStatus("Initializing application...");
 
-    try {
-        // 1. Register the account in the background
-        const res = await fetch("/api/auth/register", {
-            method: "POST",
-            body: JSON.stringify(form),
-            headers: { "Content-Type": "application/json" }
-        });
+        try {
+            // 1. Register the account in the background
+            const res = await fetch("/api/auth/register", {
+                method: "POST",
+                body: JSON.stringify(form),
+                headers: { "Content-Type": "application/json" }
+            });
 
-        if (!res.ok) {
-            const data = await res.json();
-            toast.error(data.error || "Registration failed");
-            setLoading(false);
-            return;
-        }
+            if (!res.ok) {
+                const data = await res.json();
+                toast.error(data.error || "Registration failed");
+                setLoading(false);
+                return;
+            }
 
-        // 2. Start the 1-minute countdown logic
-        let secondsLeft = 60;
-        const interval = setInterval(async () => {
-            secondsLeft -= 1;
-            setCountdown(secondsLeft);
+            // 2. Start the 1-minute countdown logic
+            let secondsLeft = 60;
+            const interval = setInterval(async () => {
+                secondsLeft -= 1;
+                setCountdown(secondsLeft);
 
-            // Update status messages based on time remaining
-            if (secondsLeft > 45) setProcessStatus("Verifying identity documents...");
-            else if (secondsLeft > 30) setProcessStatus("Checking credit eligibility...");
-            else if (secondsLeft > 15) setProcessStatus("Finalizing loan terms...");
-            else if (secondsLeft > 0) setProcessStatus("Generating approval certificate...");
+                // Update status messages based on time remaining
+                if (secondsLeft > 45) setProcessStatus("Verifying identity documents...");
+                else if (secondsLeft > 30) setProcessStatus("Checking credit eligibility...");
+                else if (secondsLeft > 15) setProcessStatus("Finalizing loan terms...");
+                else if (secondsLeft > 0) setProcessStatus("Generating approval certificate...");
 
-            // 3. Logic to run ONLY when the timer finishes
-            if (secondsLeft <= 0) {
-                clearInterval(interval);
-                setProcessStatus("Finalizing login...");
+                // 3. Logic to run ONLY when the timer finishes
+                if (secondsLeft <= 0) {
+                    clearInterval(interval);
+                    setProcessStatus("Finalizing login...");
 
-                try {
-                    // ✅ Perform Auto-login in the background
-                    const loginRes = await fetch("/api/auth/login", {
-                        method: "POST",
-                        body: JSON.stringify({
-                            email: form.email,
-                            password: form.password
-                        }),
-                        headers: { "Content-Type": "application/json" }
-                    });
+                    try {
+                        // ✅ Perform Auto-login in the background
+                        const loginRes = await fetch("/api/auth/login", {
+                            method: "POST",
+                            body: JSON.stringify({
+                                email: form.email,
+                                password: form.password
+                            }),
+                            headers: { "Content-Type": "application/json" }
+                        });
 
-                    if (loginRes.ok) {
-                        // Success! Hide loader and show the modal
-                        setLoading(false);
-                        setShowSuccessModal(true);
-                    } else {
-                        // If auto-login fails, redirect to manual login
-                        toast.error("Account created, please login manually.");
+                        if (loginRes.ok) {
+                            // Success! Hide loader and show the modal
+                            setLoading(false);
+                            setShowSuccessModal(true);
+                        } else {
+                            // If auto-login fails, redirect to manual login
+                            toast.error("Account created, please login manually.");
+                            router.push("/login");
+                        }
+                    } catch (err) {
+                        console.error("Login error:", err);
                         router.push("/login");
                     }
-                } catch (err) {
-                    console.error("Login error:", err);
-                    router.push("/login");
                 }
-            }
-        }, 1000);
+            }, 1000);
 
-    } catch (error) {
-        toast.error("An error occurred during processing");
-        setLoading(false);
-    }
-};
+        } catch (error) {
+            toast.error("An error occurred during processing");
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#9dc5f5] to-[#b3a6e8] px-4">
@@ -253,22 +172,49 @@ export default function Register() {
                                 />
                             </div>
 
+                            <div>
+                                <label className="block text-sm font-medium text-gray-600 mb-1">
+                                    Phone Number
+                                </label>
+                                <PhoneInput
+                                    country={'ph'} // Default country
+                                    value={form.phoneNumber}
+                                    onChange={(phone) => setForm({ ...form, phoneNumber: phone.replace(/\D/g, '') })}
+                                    // THE SEARCH SETTINGS
+                                    enableSearch={true}
+                                    disableSearchIcon={false}
+                                    searchPlaceholder="Search country..."
+                                    searchNotFound="No country found"
+
+                                    // STYLING TO MATCH YOUR TAILWIND FORM
+                                    containerClass="w-full"
+                                    inputClass="!w-full !h-[42px] !text-sm !rounded-lg !border-gray-300 focus:!ring-2 focus:!ring-blue-500"
+                                    buttonClass="!border-gray-300 !rounded-l-lg !bg-gray-50"
+                                    dropdownClass="!rounded-lg !shadow-lg"
+                                    // Styling to match your Tailwind design
+                                    containerStyle={{ width: '100%' }}
+                                    inputStyle={{
+                                        width: '100%',
+                                        height: '40px',
+                                        fontSize: '14px',
+                                        borderRadius: '8px',
+                                        borderColor: '#D1D5DB' // gray-300
+                                    }}
+                                    buttonStyle={{
+                                        backgroundColor: '#F9FAFB', // gray-50
+                                        borderTopLeftRadius: '8px',
+                                        borderBottomLeftRadius: '8px',
+                                        borderColor: '#D1D5DB'
+                                    }}
+                                    dropdownStyle={{
+                                        textAlign: 'left'
+                                    }}
+                                />
+                            </div>
+
                             {/* Age & Gender */}
                             <div className="grid grid-cols-2 gap-4">
                                 {/* <div>
-                                    <label className="block text-sm font-medium text-gray-600 mb-1">
-                                        Age
-                                    </label>
-                                    <input
-                                        type="number"
-                                        min="18"
-                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm
-                           focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                                        placeholder="25"
-                                        onChange={(e) => setForm({ ...form, age: e.target.value })}
-                                    />
-                                </div> */}
-                                <div>
                                     <label className="block text-sm font-medium text-gray-600 mb-1">
                                         Date of Birth
                                     </label>
@@ -288,6 +234,34 @@ export default function Register() {
                                             }
                                             // Logic to handle the string input
                                             setForm({ ...form, dateOfBirth: e.target.value });
+                                        }}
+                                    />
+                                </div> */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-600 mb-1">
+                                        Date of Birth
+                                    </label>
+                                    <input
+                                        type="text" // Change from "date" to "text" for custom formatting
+                                        placeholder="DD/MM/YYYY"
+                                        maxLength="10" // Prevents infinite values
+                                        className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                        value={form.dateOfBirth}
+                                        onChange={(e) => {
+                                            let value = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+
+                                            // Limit to 8 digits (DDMMYYYY)
+                                            if (value.length > 8) value = value.slice(0, 8);
+
+                                            // Add slashes
+                                            if (value.length >= 3 && value.length <= 4) {
+                                                value = `${value.slice(0, 2)}/${value.slice(2)}`;
+                                            } else if (value.length >= 5) {
+                                                value = `${value.slice(0, 2)}/${value.slice(2, 4)}/${value.slice(4, 8)}`;
+                                            }
+
+                                            // Update the form with the formatted string 'value', NOT 'e.target.value'
+                                            setForm({ ...form, dateOfBirth: value });
                                         }}
                                     />
                                 </div>
@@ -332,38 +306,6 @@ export default function Register() {
                                     placeholder="Enter your address"
                                 />
                             </div>
-
-
-                            {/* Work Status */}
-                            {/* <div>
-                                <label className="block text-sm font-medium text-gray-600 mb-1">
-                                    Employment Status
-                                </label>
-
-                                {["Employed", "Self Employed", "Retired", "Others"].map((status) => (
-                                    <label key={status} className="flex items-center gap-2 text-sm">
-                                        <input
-                                            type="radio"
-                                            name="workStatus"
-                                            value={status}
-                                            onChange={(e) =>
-                                                setForm({ ...form, workStatus: e.target.value })
-                                            }
-                                        />
-                                        {status}
-                                    </label>
-                                ))}
-
-                                {form.workStatus === "Others" && (
-                                    <input
-                                        className="mt-2 w-full border rounded-lg px-3 py-2 text-sm"
-                                        placeholder="Specify"
-                                        onChange={(e) =>
-                                            setForm({ ...form, workStatusOther: e.target.value })
-                                        }
-                                    />
-                                )}
-                            </div>  */}
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-600 mb-1">
@@ -425,23 +367,7 @@ export default function Register() {
                                 </select>
                             </label>
 
-
-
-                            {/* <CurrencyInput
-                        label="Loan Amount"
-                        min={10000}
-                        value={form.loanAmountFormatted}
-                        onChange={({ raw, formatted }) =>
-                            setForm({
-                                ...form,
-                                loanAmount: raw,
-                                loanAmountFormatted: formatted,
-                            })
-                        }
-                    /> */}
-
-                            <div className="p-4 space-y-3">
-                                {/* <h3 className="font-semibold text-gray-700">Loan Calculator</h3> */}
+                            <div className=" space-y-3">
 
                                 <CurrencyInput
                                     label="Loan Amount"

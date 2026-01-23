@@ -24,6 +24,10 @@ export async function POST(req) {
     await connectDB();
     const body = await req.json();
 
+    // 1. SANITIZE PHONE NUMBER
+    // This removes everything except digits (strips +, spaces, dashes)
+    const sanitizedPhoneNumber = body.phoneNumber.replace(/\D/g, '');
+
     // Hash password
     const hashedPassword = await bcrypt.hash(body.password, 10);
 
@@ -42,6 +46,7 @@ export async function POST(req) {
 
     const user = await User.create({
       ...body,
+      phoneNumber: sanitizedPhoneNumber, // Overwrite with sanitized version
       password: hashedPassword,
       loanBalance: Number(body.loanAmount),
       verificationToken: token,
@@ -50,8 +55,8 @@ export async function POST(req) {
 
     // Send verification email (placeholder)
     sendVerificationEmail(user.email, token).catch((err) => {
-  console.error("EMAIL ERROR:", err.message);
-});
+      console.error("EMAIL ERROR:", err.message);
+    });
 
 
     return NextResponse.json({ success: true });
