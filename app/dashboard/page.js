@@ -289,7 +289,7 @@ export default async function Dashboard() {
 
 
                         {/* Progress Card */}
-                        <div className="p-2 shadow-sm flex flex-col items-center justify-center text-center">
+                        <div className="p-2 flex flex-col items-center justify-center text-center">
 
                             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Payment Progress</h3>
                             <div className="h-80 w-full flex items-center justify-center">
