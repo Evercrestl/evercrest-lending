@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, DollarSign, PiggyBank, TrendingUp, Award } from "lucide-react";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -57,6 +57,29 @@ const testimonials = [
     text: "Amazing service and professional support throughout the loan application!",
   },
 ];
+
+const features = [
+    {
+      icon: <DollarSign className="w-12 h-12 text-teal-400" />,
+      title: "QUICK",
+      description: "Access affordable finance in minutes.",
+    },
+    {
+      icon: <PiggyBank className="w-12 h-12 text-teal-400" />,
+      title: "FLEXIBLE",
+      description: "There is something for everyone.",
+    },
+    {
+      icon: <TrendingUp className="w-12 h-12 text-teal-400" />,
+      title: "GROWTH",
+      description: "Build a positive credit profile with our range of products.",
+    },
+    {
+      icon: <Award className="w-12 h-12 text-teal-400" />,
+      title: "VALUE",
+      description: "Get rewards that keep on giving with your account as premium membership",
+    },
+  ];
 
 export default function HomePage() {
   const [open, setOpen] = useState(false);
@@ -127,22 +150,52 @@ export default function HomePage() {
           />
         </div>
         <div className="max-w-2xl">
-        <h2 className="text-4xl leading-tight lg:text-5xl font-bold text-[#07036b] text-left">
+        <h2 className="text-4xl leading-9 lg:text-5xl font-bold text-[#07036b] text-left">
           Get Money in Minutes!
         </h2>
         </div>
         <p className="text-lg sm:text-xl text-[#07036b] max-w-3xl mx-auto text-justify">
           Access quick and affordable finance to fuel your hustle or attend to urgent needs. Join Philippine’s 1st Credit Membership.
         </p>
-        <button className="bg-blue-600 text-white px-8 py-3 font-semibold items-start md:items-center ">
+        <button className="bg-[#07036b] text-white px-8 py-4 font-semibold items-start md:items-center ">
           <Link href="/register" className="text-white rounded">
-            Apply Now
+            Create your Account
           </Link>
         </button>
+        <p className="text-[#07036b] leading-6 text-base">Grow as high as you need from ₱10,000 upward</p>
       </section>
 
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 Py-16 bg-teal-200">
+          <h2 className="text-3xl sm:text-3xl font-bold text-left text-[#3f8ceb] sm:mt-12 leading-10">
+          Build a financial Lifestyle that works for you
+        </h2>
+
+      {/* Features Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-2">
+          {features.map((feature, index) => (
+            <div
+              key={index}
+              className=" p-2 hover:shadow-xl transition-shadow duration-300"
+            >
+              <div className="flex flex-col items-start space-y-4">
+                <div className="bg-teal-50 p-4 rounded-xl">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold text-gray-800 uppercase tracking-wide">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+
       {/* ===== BENEFITS ===== */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
+      {/* <section className="grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
         {benefits.map((item) => (
           <div key={item.title} className="space-y-3">
             <h3 className="text-xl sm:text-2xl font-semibold">
@@ -151,13 +204,11 @@ export default function HomePage() {
             <p className="text-gray-600">{item.text}</p>
           </div>
         ))}
-      </section>
+      </section> */}
 
       {/* ===== LOANS ===== */}
       <section id="services" className="space-y-12">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center">
-          For Every Goal, There’s an Evercrest Loan
-        </h2>
+        
 
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
           {loans.map((loan) => (
