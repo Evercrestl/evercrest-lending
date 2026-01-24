@@ -1,16 +1,14 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import {  Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const playfair = Playfair_Display({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-playfair",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+
 
 export const metadata = {
   title: "Evercrest Lending",
@@ -21,7 +19,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${playfair.variable} antialiased`}
       >
         <Toaster position="top-center" />
         {children}
