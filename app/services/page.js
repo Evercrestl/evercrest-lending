@@ -133,9 +133,12 @@ const ServicesPage = () => {
           <p className="text-xl text-gray-300 mb-8">
             Our financial experts are here to help you find the perfect solution for your situation.
           </p>
+          
+          <Link href="/contact">
           <button className="px-8 py-4 bg-white text-brand-blue font-bold rounded-lg hover:bg-gray-100 transition-colors shadow-lg">
             Talk to an Expert
           </button>
+          </Link>
         </div>
       </section>
     </div>
