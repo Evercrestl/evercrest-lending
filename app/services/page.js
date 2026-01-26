@@ -19,7 +19,7 @@ const ServicesPage = () => {
     } else {
       window.scrollTo(0, 0);
     }
-  }, [location]);
+  }, [pathname]);
 
   const services = [
     {
@@ -69,7 +69,7 @@ const ServicesPage = () => {
   return (
     <div className="min-h-screen flex flex-col font-sans bg-gray-50">
       <Navbar />
-      
+
       {/* Header Section */}
       <div className="bg-brand-blue pt-32 pb-20 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -94,7 +94,7 @@ const ServicesPage = () => {
                   <p className="text-lg text-gray-600 mb-8 leading-relaxed">
                     {service.description}
                   </p>
-                  
+
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Key Benefits:</h3>
                   <ul className="space-y-3 mb-8">
                     {service.features.map((feature, idx) => (
@@ -104,7 +104,7 @@ const ServicesPage = () => {
                       </li>
                     ))}
                   </ul>
-                  
+
                   <button className="px-6 py-3 bg-brand-blue text-white font-semibold rounded-lg hover:bg-brand-dark transition-colors flex items-center">
                     Apply for {service.title} <ArrowRight size={18} className="ml-2" />
                   </button>
@@ -112,9 +112,9 @@ const ServicesPage = () => {
               </div>
               <div className="lg:w-1/2 flex justify-center">
                 {/* Placeholder for service image - using a generic finance one for now */}
-                <img 
-                  src="https://public.youware.com/users-website-assets/prod/0060604d-563e-4b70-9f2f-5525f45b31de/2c826f5c72c942bc8a92393c682b86f0.jpg" 
-                  alt={service.title} 
+                <img
+                  src="https://public.youware.com/users-website-assets/prod/0060604d-563e-4b70-9f2f-5525f45b31de/2c826f5c72c942bc8a92393c682b86f0.jpg"
+                  alt={service.title}
                   className="rounded-2xl shadow-lg object-cover w-full h-100"
                 />
               </div>
