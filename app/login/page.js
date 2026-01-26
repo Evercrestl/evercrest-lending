@@ -3,6 +3,8 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 
 function LoginContent() {
@@ -110,7 +112,9 @@ function LoginContent() {
 export default function Login(){
     return (
         <Suspense fallback={null}>
+            <Navbar />
             <LoginContent />
+            <Footer />
         </Suspense>
     )
 }

@@ -141,7 +141,9 @@ const ServicesPage = () => {
           </Link>
         </div>
       </section>
+      <Footer />
     </div>
+    
   );
 };
 
