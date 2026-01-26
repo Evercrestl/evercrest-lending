@@ -12,6 +12,7 @@ const Navbar = () => {
 
     const navLinks = [
         { name: 'Home', href: '/' },
+        { name: 'About', href: '#about' },
         { name: 'Services', href: '/services' },
         { name: 'Contact', href: '/contact' },
         { name: 'Login', href: '/login' },
@@ -59,17 +60,17 @@ const Navbar = () => {
                             <Link
                                 key={link.name}
                                 href={link.href || '#'}
-                                className={`text-gray-700 hover:text-brand-blue ${pathname === link.href ? 'text-brand-blue font-semibold' : ''}`}
+                                className={`text-gray-700 hover:text-[#0056be] ${pathname === link.href ? 'text-brand-blue font-semibold' : ''}`}
                             >
                                 {link.name}
                             </Link>
                         ))}
 
-                        {isHome ? (
+                        {/* {isHome ? (
                             <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-brand-blue">About</button>
                         ) : (
                             <Link href="/#about" className="text-gray-700 hover:text-brand-blue">About</Link>
-                        )}
+                        )} */}
                     </div>
 
                     {/* Mobile Toggle */}

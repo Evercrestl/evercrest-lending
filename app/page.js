@@ -628,9 +628,11 @@ export default function HomePage() {
             Join thousands of satisfied customers who have chosen Evercrest Lending for their financial needs. Apply today and get a decision in minutes.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link href="/register">
             <button className="px-8 py-4 bg-brand-blue text-white font-bold rounded-lg hover:bg-blue-600 transition-colors shadow-lg">
               Apply Now
             </button>
+            </Link>
             <Link href="/contact" className="px-8 py-4 bg-transparent border border-white text-white font-bold rounded-lg hover:bg-white/10 transition-colors inline-block">
               Contact Support
             </Link>
@@ -638,7 +640,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 };
