@@ -418,11 +418,15 @@
 
 "use client"
 import Link from 'next/link';
+import { useState } from 'react';
+import LoanModal from '@/components/LoanModal';
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer";
 import { ArrowRight, Shield, Clock, Percent, CheckCircle, TrendingUp, Users } from 'lucide-react';
+import Image from 'next/image';
 
 export default function HomePage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="min-h-screen flex flex-col font-sans">
       <Navbar />
@@ -451,9 +455,10 @@ export default function HomePage() {
               <button className="px-8 py-4 bg-[#00a8e8] text-white font-semibold rounded-lg hover:bg-blue-400 transition-all shadow-lg flex items-center justify-center">
                 Get Started Now <ArrowRight className="ml-2" size={20} />
               </button>
-              <button className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white text-white font-semibold rounded-lg hover:bg-white/20 transition-all flex items-center justify-center">
+              <button onClick={() => setIsModalOpen(true)} className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white text-white font-semibold rounded-lg hover:bg-white/20 transition-all flex items-center justify-center">
                 View Rates
               </button>
+              <LoanModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
             </div>
           </div>
         </div>
@@ -508,7 +513,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/2">
-              <img 
+              <Image 
                 src="https://public.youware.com/users-website-assets/prod/0060604d-563e-4b70-9f2f-5525f45b31de/c6d11673c2f54d2a9c9b4532128016a4.jpg" 
                 alt="Business handshake" 
                 className="rounded-2xl shadow-2xl w-full object-cover h-125"

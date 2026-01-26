@@ -3,7 +3,8 @@ import { useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { usePathname } from 'next/navigation';
-import { ArrowRight, Shield, Clock, Percent, TrendingUp, Users, Car, GraduationCap, RefreshCw } from 'lucide-react';
+import { ArrowRight, Shield, TrendingUp, Users, Car, GraduationCap, RefreshCw } from 'lucide-react';
+import Link from 'next/link';
 
 const ServicesPage = () => {
   const pathname = usePathname();
@@ -105,9 +106,11 @@ const ServicesPage = () => {
                     ))}
                   </ul>
 
+                  <Link href="/register">
                   <button className="px-6 py-3 bg-brand-blue text-white font-semibold rounded-lg hover:bg-brand-dark transition-colors flex items-center">
                     Apply for {service.title} <ArrowRight size={18} className="ml-2" />
                   </button>
+                    </Link>
                 </div>
               </div>
               <div className="lg:w-1/2 flex justify-center">
@@ -135,8 +138,6 @@ const ServicesPage = () => {
           </button>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 };
