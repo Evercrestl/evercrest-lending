@@ -1,6 +1,8 @@
 import { Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast"
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -22,7 +24,9 @@ export default function RootLayout({ children }) {
         className={`${playfair.variable} font-playfair antialiased`}
       >
         <Toaster position="top-center" />
+        <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

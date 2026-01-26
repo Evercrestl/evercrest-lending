@@ -14,6 +14,8 @@ const Navbar = () => {
         { name: 'Home', href: '/' },
         { name: 'Services', href: '/services' },
         { name: 'Contact', href: '/contact' },
+        { name: 'Login', href: '/login' },
+        { name: 'Register', href: '/register' },
     ];
 
     const scrollToSection = (id) => {
@@ -30,19 +32,39 @@ const Navbar = () => {
                     <Link href="/" className="flex items-center">
                         <Image src="/logo.png" alt="Logo" width={150} height={40} className="h-10 w-auto" priority />
                     </Link>
+                    <div className="md:hidden flex items-center space-x-4">
+                        <Link 
+                            href="/login" 
+                            className="text-sm font-semibold text-gray-700 hover:text-blue-600"
+                        >
+                            Login
+                        </Link>
+                        <Link 
+                            href="/register" 
+                            className="text-sm font-semibold text-gray-700 hover:text-blue-600"
+                        >
+                            Register
+                        </Link>
+                        {/* <button 
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="text-gray-700 p-1 outline-none"
+                        >
+                            {isOpen ? <X size={28} /> : <Menu size={28} />}
+                        </button> */}
+                    </div>
 
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center space-x-8">
                         {navLinks.map((link) => (
-                            <Link 
-                                key={link.name} 
-                                href={link.href || '#'} 
+                            <Link
+                                key={link.name}
+                                href={link.href || '#'}
                                 className={`text-gray-700 hover:text-brand-blue ${pathname === link.href ? 'text-brand-blue font-semibold' : ''}`}
                             >
                                 {link.name}
                             </Link>
                         ))}
-                        
+
                         {isHome ? (
                             <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-brand-blue">About</button>
                         ) : (
@@ -61,9 +83,9 @@ const Navbar = () => {
             {isOpen && (
                 <div className="md:hidden bg-white border-t p-4 space-y-2">
                     {navLinks.map((link) => (
-                        <Link 
-                            key={link.name} 
-                            href={link.href || '#'} 
+                        <Link
+                            key={link.name}
+                            href={link.href || '#'}
                             onClick={() => setIsOpen(false)}
                             className="block py-2 text-gray-700"
                         >
