@@ -560,6 +560,7 @@ import Footer from "@/components/Footer";
 export default function Register() {
     const router = useRouter();
     const [step, setStep] = useState(1);
+    const [agreedToTerms, setAgreedToTerms] = useState(false);
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -589,6 +590,10 @@ export default function Register() {
         const required = ['name', 'email', 'password', 'phoneNumber', 'dateOfBirth', 'gender', 'workStatus', 'loanType', 'loanAmount', 'repaymentMonths'];
         if (required.some(field => !form[field])) {
             toast.error("Please fill all required fields");
+            return;
+        }
+        if (!agreedToTerms) {
+            toast.error("You must agree to the Terms and Conditions");
             return;
         }
         setStep(2);
@@ -656,11 +661,11 @@ export default function Register() {
             <Navbar />
 
             {/* 2. REGISTRATION FORM (MAIN CONTENT) */}
-            <main className="flex-grow py-12 px-4 bg-gray-50">
+            <main className="grow py-12 px-4 bg-gray-50">
                 <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-                    <div className="bg-gray-900 p-8 text-center">
+                    <div className="p-8 text-center">
                         <h1 className="text-3xl font-bold text-white">Create Your Account</h1>
-                        <p className="text-gray-400 mt-2">Complete the form below to apply for your loan</p>
+                        <p className="text-black mt-2">Complete the form below to apply for your loan</p>
                     </div>
 
                     <div className="p-8 md:p-12">
@@ -668,7 +673,7 @@ export default function Register() {
                             <div className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-1">
-                                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">Full Name</label>
+                                        <label className="text-xs font-bold text-black uppercase ml-1">Full Name</label>
                                         <input type="text" placeholder="John Doe" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none" onChange={(e) => setForm({ ...form, name: e.target.value })} value={form.name} />
                                     </div>
                                     <div className="space-y-1">
@@ -759,13 +764,27 @@ export default function Register() {
                                         />
                                         <div className="space-y-1">
                                             <label className="text-xs font-bold text-gray-500 uppercase ml-1">Repayment Period (Months)</label>
-                                            <input type="number" placeholder="e.g. 12" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:ring-2 focus:ring-blue-500 outline-none" onChange={(e) => setForm({ ...form, repaymentMonths: e.target.value })} value={form.repaymentMonths} />
+                                            <input type="number" placeholder="e.g. 12" min="1"
+                                                max="24" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:ring-2 focus:ring-blue-500 outline-none" onChange={(e) => setForm({ ...form, repaymentMonths: e.target.value })} value={form.repaymentMonths} />
                                         </div>
                                     </div>
                                     <div className="pt-4 border-t border-blue-100 flex justify-between items-center">
                                         <span className="text-sm font-semibold text-blue-800 uppercase">Total Repayment (5% Interest)</span>
-                                        <span className="text-2xl font-black text-blue-600">₱{form.loanAmount ? (form.loanAmount * 1.05).toLocaleString() : "0"}</span>
+                                        <span className="text-2xl font-black text-blue-600">₱ {form.loanAmount ? (form.loanAmount * 1.05).toLocaleString() : "0"}</span>
                                     </div>
+                                </div>
+                                {/* TERMS AND CONDITIONS */}
+                                <div className="flex items-start gap-3 p-2">
+                                    <input
+                                        type="checkbox"
+                                        id="terms"
+                                        className="mt-1 w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                        checked={agreedToTerms}
+                                        onChange={(e) => setAgreedToTerms(e.target.checked)}
+                                    />
+                                    <label htmlFor="terms" className="text-sm text-gray-600 cursor-pointer select-none">
+                                        I agree to the <span className="text-blue-600 font-bold hover:underline">Terms of Service</span> and <span className="text-blue-600 font-bold hover:underline">Privacy Policy</span>, and I authorize Evercrest to process my credit information.
+                                    </label>
                                 </div>
 
                                 <button onClick={goToStep2} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg active:scale-95">
@@ -777,7 +796,7 @@ export default function Register() {
                                 <div className="text-center">
                                     <h3 className="text-xl font-bold text-gray-800 mb-2">Final Step: ID Verification</h3>
                                     <p className="text-gray-500 mb-8">Please upload a clear photo of your government-issued ID.</p>
-                                    
+
                                     <div className="border-2 border-dashed border-gray-200 rounded-3xl p-12 bg-gray-50 hover:bg-gray-100 transition-all cursor-pointer">
                                         <input type="file" className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
                                             onChange={(e) => setForm({ ...form, idDocument: e.target.files[0] })} />
