@@ -115,7 +115,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { User, Settings, LogOut, ChevronDown } from "lucide-react";
+import { User, Settings, LogOut, ChevronDown, Wallet, History } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function ProfileDropdown({ user }) {
@@ -204,7 +204,7 @@ export default function ProfileDropdown({ user }) {
                             }}
                             className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
                         >
-                            <User size={16} />
+                            <Wallet size={16} />
                             <span>Loans</span>
                         </button>
 
@@ -215,7 +215,7 @@ export default function ProfileDropdown({ user }) {
                             }}
                             className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
                         >
-                            <User size={16} />
+                            <History size={16} />
                             <span>Transactions</span>
                         </button>
 
