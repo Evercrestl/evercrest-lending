@@ -605,7 +605,7 @@ export default async function Dashboard() {
 
             <main className="flex-1 overflow-y-auto">
                 {/* Top Navbar */}
-                <header className="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-9999 border-b border-slate-200 px-1 md:px-8 flex items-center justify-between">
+                <header className="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-9999 border-b border-slate-200 px-3 md:px-8 flex items-center justify-between">
                     <div>
                         <h1 className="hidden md:block text-xl font-bold text-slate-800">Financial Overview</h1>
                         <div className="flex">
