@@ -494,7 +494,7 @@ export default function PaymentModal({ deposit, percentage, loanAmount, triggerL
                     <ShieldCheck size={24} />
                     Secure Deposit
                   </h3>
-                  <p className="text-blue-100 text-xs mt-1 opacity-90">Verify your identity via security fee</p>
+                  <p className="text-blue-100 text-xs mt-2 opacity-90">A Security Deposit is required for verification. The amount paid will be added to your loan balance upon approval</p>
                 </div>
                 <button onClick={() => setIsOpen(false)} className="bg-white/10 hover:bg-white/20 p-2 rounded-full">
                   <X size={18} />
