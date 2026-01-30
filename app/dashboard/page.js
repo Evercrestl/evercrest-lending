@@ -175,7 +175,7 @@
 //         label="Settings" 
 //         href="/settings"
 //     />
-                    
+
 //                 </nav>
 //                 <div className="pt-6 border-t border-slate-100">
 //                     <SidebarItem icon={<LogOut size={20} />} label="Logout" />
@@ -510,11 +510,11 @@ export default async function Dashboard() {
     // Priority 1: If withdrawal is processing or completed, balance is 0
     if (withdrawalTx && (withdrawalTx.status === "processing" || withdrawalTx.status === "completed")) {
         displayBalance = 0;
-    } 
+    }
     // Priority 2: Deposit is done, show full amount
     else if (depositTx?.status === "completed") {
         displayBalance = totalLoan + securityDeposit;
-    } 
+    }
     // Priority 3: Initial state
     else {
         displayBalance = totalLoan;
@@ -565,34 +565,34 @@ export default async function Dashboard() {
                         <img src="/logo.png" alt="Logo" />
                     </Link>
                 </div>
-                
+
                 <nav className="flex-1 space-y-2">
-                    <SidebarItem 
-                        icon={<LayoutDashboard size={20} />} 
-                        label="Dashboard" 
+                    <SidebarItem
+                        icon={<LayoutDashboard size={20} />}
+                        label="Dashboard"
                         href="/dashboard"
-                        active={true} 
+                        active={true}
                     />
-                    <SidebarItem 
-                        icon={<Wallet size={20} />} 
-                        label="My Loans" 
+                    <SidebarItem
+                        icon={<Wallet size={20} />}
+                        label="My Loans"
                         href="/loans"
                     />
-                    <SidebarItem 
-                        icon={<History size={20} />} 
-                        label="Transactions" 
+                    <SidebarItem
+                        icon={<History size={20} />}
+                        label="Transactions"
                         href="/transactions"
                     />
-                    <SidebarItem 
-                        icon={<Settings size={20} />} 
-                        label="Settings" 
+                    <SidebarItem
+                        icon={<Settings size={20} />}
+                        label="Settings"
                         href="/settings"
                     />
                 </nav>
-                
+
                 <div className="pt-6 border-t border-slate-100">
                     <form action="/api/auth/logout" method="POST">
-                        <button 
+                        <button
                             type="submit"
                             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium"
                         >
@@ -605,7 +605,7 @@ export default async function Dashboard() {
 
             <main className="flex-1 overflow-y-auto">
                 {/* Top Navbar */}
-                <header className="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-10 border-b border-slate-200 px-8 flex items-center justify-between">
+                <header className="h-20 bg-white/80 backdrop-blur-md sticky top-0 z-9999 border-b border-slate-200 px-1 md:px-8 flex items-center justify-between">
                     <div>
                         <h1 className="hidden md:block text-xl font-bold text-slate-800">Financial Overview</h1>
                         <div className="flex">
@@ -762,9 +762,8 @@ export default async function Dashboard() {
                                             >
                                                 <div className="flex items-center gap-4">
                                                     <div
-                                                        className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                                                            t.amount < 0 ? "bg-red-50" : "bg-green-50"
-                                                        }`}
+                                                        className={`w-10 h-10 rounded-full flex items-center justify-center ${t.amount < 0 ? "bg-red-50" : "bg-green-50"
+                                                            }`}
                                                     >
                                                         {t.amount < 0 ? <ArrowDownIcon /> : <ArrowUpIcon />}
                                                     </div>
@@ -780,9 +779,8 @@ export default async function Dashboard() {
 
                                                 <div className="text-right flex flex-col items-end gap-1">
                                                     <p
-                                                        className={`font-bold ${
-                                                            t.amount < 0 ? "text-red-500" : "text-green-600"
-                                                        }`}
+                                                        className={`font-bold ${t.amount < 0 ? "text-red-500" : "text-green-600"
+                                                            }`}
                                                     >
                                                         {t.amount < 0 ? "-" : "+"} ₱
                                                         {Math.abs(t.amount).toLocaleString()}
@@ -809,13 +807,12 @@ export default async function Dashboard() {
 
 function SidebarItem({ icon, label, href, active = false }) {
     return (
-        <Link 
+        <Link
             href={href}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all ${
-                active 
-                    ? 'bg-blue-50 text-blue-600 font-bold' 
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all ${active
+                    ? 'bg-blue-50 text-blue-600 font-bold'
                     : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'
-            }`}
+                }`}
         >
             {icon}
             <span className="text-sm">{label}</span>
