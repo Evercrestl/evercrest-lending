@@ -423,7 +423,7 @@ import LoanModal from '@/components/LoanModal';
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer";
 import { ArrowRight, Shield, Clock, Percent, CheckCircle, TrendingUp, Users } from 'lucide-react';
-import Image from 'next/image';
+
 
 export default function HomePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -560,7 +560,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold mb-2">$500M+</div>
+              <div className="text-4xl font-bold mb-2">₱500M+</div>
               <div className="text-blue-200">Loans Funded</div>
             </div>
             <div>

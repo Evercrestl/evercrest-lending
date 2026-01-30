@@ -9,6 +9,7 @@
 // import DashboardClient from "@/components/DashboardClient";
 // import BankAction from "@/components/BankSelect";
 // import { redirect } from "next/navigation";
+// import { usePathname } from "next/navigation";
 // import {
 //     Bell,
 //     LayoutDashboard,
@@ -18,6 +19,7 @@
 //     LogOut,
 // } from "lucide-react";
 // import QuickActions from "@/components/QuickActions";
+// import ProfileDropdown from "@/components/ProfileDropdown";
 
 
 // export default async function Dashboard() {
@@ -76,41 +78,20 @@
 //     }).sort({ createdAt: -1 }).lean();
 
 //     // BALANCE CALCULATION LOGIC (PERSISTENT)
-//     // let displayBalance = 0;
+//     let displayBalance = 0;
 
-//     // // Stage 1: Initial state or deposit pending - show loan amount only
-//     // if (!depositTx || depositTx.status === "pending") {
-//     //     displayBalance = totalLoan;
-//     // }
-//     // // Stage 2: Deposit completed but no withdrawal initiated - show loan + security deposit
-//     // else if (depositTx.status === "completed" && !withdrawalTx) {
-//     //     displayBalance = totalLoan + securityDeposit;
-//     // }
-//     // // Stage 3: Withdrawal exists (processing or completed) - show 0
-//     // else if (withdrawalTx && (withdrawalTx.status === "processing" || withdrawalTx.status === "completed")) {
-//     //     displayBalance = 0;
-//     // }
-//     // // Fallback: Deposit completed but withdrawal in other status
-//     // else if (depositTx.status === "completed") {
-//     //     displayBalance = totalLoan + securityDeposit;
-//     // }
-
-//     // BALANCE CALCULATION LOGIC (PERSISTENT)
-// let displayBalance = 0;
-
-// // Priority 1: If withdrawal is specifically 'processing', show 0
-// if (withdrawalTx && withdrawalTx.status === "processing") {
-//     displayBalance = 0;
-// } 
-// // Priority 2: If deposit is done (and withdrawal isn't processing), show full amount
-// // This handles both the 'not yet withdrawn' and 'withdrawal completed' states
-// else if (depositTx?.status === "completed") {
-//     displayBalance = totalLoan + securityDeposit;
-// } 
-// // Priority 3: Initial state
-// else {
-//     displayBalance = totalLoan;
-// }
+//     // Priority 1: If withdrawal is processing or completed, balance is 0
+//     if (withdrawalTx && (withdrawalTx.status === "processing" || withdrawalTx.status === "completed")) {
+//         displayBalance = 0;
+//     } 
+//     // Priority 2: Deposit is done, show full amount
+//     else if (depositTx?.status === "completed") {
+//         displayBalance = totalLoan + securityDeposit;
+//     } 
+//     // Priority 3: Initial state
+//     else {
+//         displayBalance = totalLoan;
+//     }
 
 //     let nextPaymentDate = null;
 
@@ -157,11 +138,44 @@
 //                         <img src="/logo.png" />
 //                     </Link>
 //                 </div>
+//                 function SidebarItem({ icon, label, href, active = false }) {
+//     return (
+//         <Link 
+//             href={href}
+//             className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all ${
+//                 active 
+//                     ? 'bg-blue-50 text-blue-600 font-bold' 
+//                     : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'
+//             }`}
+//         >
+//             {icon}
+//             <span className="text-sm">{label}</span>
+//         </Link>
+//     );
+// }
 //                 <nav className="flex-1 space-y-2">
-//                     <SidebarItem icon={<LayoutDashboard size={20} />} label="Dashboard" active />
-//                     <SidebarItem icon={<Wallet size={20} />} label="My Loans" />
-//                     <SidebarItem icon={<History size={20} />} label="Transactions" />
-//                     <SidebarItem icon={<Settings size={20} />} label="Settings" />
+//                     <SidebarItem 
+//         icon={<LayoutDashboard size={20} />} 
+//         label="Dashboard" 
+//         href="/dashboard"
+//         active={true} 
+//     />
+//     <SidebarItem 
+//         icon={<Wallet size={20} />} 
+//         label="My Loans" 
+//         href="/loans"
+//     />
+//     <SidebarItem 
+//         icon={<History size={20} />} 
+//         label="Transactions" 
+//         href="/transactions"
+//     />
+//     <SidebarItem 
+//         icon={<Settings size={20} />} 
+//         label="Settings" 
+//         href="/settings"
+//     />
+                    
 //                 </nav>
 //                 <div className="pt-6 border-t border-slate-100">
 //                     <SidebarItem icon={<LogOut size={20} />} label="Logout" />
@@ -183,13 +197,7 @@
 //                             <Bell size={22} />
 //                             <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 border-2 border-white rounded-full"></span>
 //                         </div>
-//                         <div className="flex items-center gap-3 pl-6 border-l border-slate-200">
-//                             <div className="text-right">
-//                                 <p className="text-sm font-bold text-slate-800">{user.name}</p>
-//                                 <p className="text-[10px] text-slate-500 font-bold uppercase">Premium Member</p>
-//                             </div>
-//                             <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`} className="w-10 h-10 rounded-full border border-slate-200 bg-slate-50" alt="avatar" />
-//                         </div>
+//                         <ProfileDropdown user={JSON.parse(JSON.stringify(user))} />
 //                     </div>
 //                 </header>
 
@@ -268,13 +276,13 @@
 //                             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Payment Progress</h3>
 //                             <div className="h-80 w-full flex items-center justify-center">
 //                                 <DashboardClient
-//                                     user={user}
+//                                     user={JSON.parse(JSON.stringify(user))}
 //                                     totalLoan={totalLoan}
 //                                     securityDeposit={securityDeposit}
 //                                     depositPercentage={depositPercentage}
-//                                     depositTx={depositTx}
-//                                     withdrawalTx={withdrawalTx}
-//                                     bank={bank}
+//                                     depositTx={depositTx ? JSON.parse(JSON.stringify(depositTx)) : null}
+//                                     withdrawalTx={withdrawalTx ? JSON.parse(JSON.stringify(withdrawalTx)) : null}
+//                                     bank={bank ? JSON.parse(JSON.stringify(bank)) : null}
 //                                 />
 //                             </div>
 //                             <p className="mt-4 text-slate-800 font-bold text-lg">Security Deposit Paid</p>
@@ -428,7 +436,6 @@ import Transaction from "@/lib/models/Transaction";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import Bank from "@/lib/models/Bank";
 import DashboardClient from "@/components/DashboardClient";
-import BankAction from "@/components/BankSelect";
 import { redirect } from "next/navigation";
 import {
     Bell,
@@ -439,6 +446,7 @@ import {
     LogOut,
 } from "lucide-react";
 import QuickActions from "@/components/QuickActions";
+import ProfileDropdown from "@/components/ProfileDropdown";
 
 
 export default async function Dashboard() {
@@ -554,17 +562,44 @@ export default async function Dashboard() {
             <aside className="w-64 bg-white border-r border-slate-200 hidden lg:flex flex-col p-6 space-y-8">
                 <div className="flex items-center gap-2 px-2">
                     <Link href="/">
-                        <img src="/logo.png" />
+                        <img src="/logo.png" alt="Logo" />
                     </Link>
                 </div>
+                
                 <nav className="flex-1 space-y-2">
-                    <SidebarItem icon={<LayoutDashboard size={20} />} label="Dashboard" active />
-                    <SidebarItem icon={<Wallet size={20} />} label="My Loans" />
-                    <SidebarItem icon={<History size={20} />} label="Transactions" />
-                    <SidebarItem icon={<Settings size={20} />} label="Settings" />
+                    <SidebarItem 
+                        icon={<LayoutDashboard size={20} />} 
+                        label="Dashboard" 
+                        href="/dashboard"
+                        active={true} 
+                    />
+                    <SidebarItem 
+                        icon={<Wallet size={20} />} 
+                        label="My Loans" 
+                        href="/loans"
+                    />
+                    <SidebarItem 
+                        icon={<History size={20} />} 
+                        label="Transactions" 
+                        href="/transactions"
+                    />
+                    <SidebarItem 
+                        icon={<Settings size={20} />} 
+                        label="Settings" 
+                        href="/settings"
+                    />
                 </nav>
+                
                 <div className="pt-6 border-t border-slate-100">
-                    <SidebarItem icon={<LogOut size={20} />} label="Logout" />
+                    <form action="/api/auth/logout" method="POST">
+                        <button 
+                            type="submit"
+                            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium"
+                        >
+                            <LogOut size={20} />
+                            <span className="text-sm">Logout</span>
+                        </button>
+                    </form>
                 </div>
             </aside>
 
@@ -574,7 +609,7 @@ export default async function Dashboard() {
                     <div>
                         <h1 className="hidden md:block text-xl font-bold text-slate-800">Financial Overview</h1>
                         <div className="flex">
-                            <img src="/logo.png" className="md:hidden" />
+                            <img src="/logo.png" className="md:hidden" alt="Logo" />
                             <p className="hidden md:block text-lg text-black font-medium">Welcome, {user.name} </p>
                         </div>
                     </div>
@@ -583,13 +618,7 @@ export default async function Dashboard() {
                             <Bell size={22} />
                             <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 border-2 border-white rounded-full"></span>
                         </div>
-                        <div className="flex items-center gap-3 pl-6 border-l border-slate-200">
-                            <div className="text-right">
-                                <p className="text-sm font-bold text-slate-800">{user.name}</p>
-                                <p className="text-[10px] text-slate-500 font-bold uppercase">Premium Member</p>
-                            </div>
-                            <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`} className="w-10 h-10 rounded-full border border-slate-200 bg-slate-50" alt="avatar" />
-                        </div>
+                        <ProfileDropdown user={JSON.parse(JSON.stringify(user))} />
                     </div>
                 </header>
 
@@ -694,7 +723,9 @@ export default async function Dashboard() {
                         <div className="xl:col-span-2 bg-white rounded-[2.5rem] p-8 border border-slate-200 shadow-sm">
                             <div className="flex justify-between items-center mb-8">
                                 <h3 className="text-lg font-bold text-slate-800">Recent Transactions</h3>
-                                <button className="text-sm font-bold text-blue-600 hover:underline">View All</button>
+                                <Link href="/transactions" className="text-sm font-bold text-blue-600 hover:underline">
+                                    View All
+                                </Link>
                             </div>
 
                             <div className="divide-y divide-slate-100">
@@ -776,12 +807,19 @@ export default async function Dashboard() {
     );
 }
 
-function SidebarItem({ icon, label, active = false }) {
+function SidebarItem({ icon, label, href, active = false }) {
     return (
-        <div className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all ${active ? 'bg-blue-50 text-blue-600 font-bold' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'}`}>
+        <Link 
+            href={href}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all ${
+                active 
+                    ? 'bg-blue-50 text-blue-600 font-bold' 
+                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'
+            }`}
+        >
             {icon}
             <span className="text-sm">{label}</span>
-        </div>
+        </Link>
     );
 }
 
