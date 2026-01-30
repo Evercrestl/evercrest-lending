@@ -597,6 +597,7 @@ export default function Register() {
             return;
         }
         setStep(2);
+        window.scrollTo({ top: 0, behavior: 'smooth' })
     };
 
     const submit = async () => {
@@ -665,7 +666,7 @@ export default function Register() {
                 <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
                     <div className="p-8 text-center">
                         <h1 className="text-3xl font-bold text-white">Create Your Account</h1>
-                        <p className="text-black mt-2">Complete the form below to apply for your loan</p>
+                        <p className="text-black mt-2 font-extrabold md:text-3xl">Create an Evercrest Account to Continue</p>
                     </div>
 
                     <div className="p-8 md:p-12">
@@ -768,9 +769,9 @@ export default function Register() {
                                                 max="24" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:ring-2 focus:ring-blue-500 outline-none" onChange={(e) => setForm({ ...form, repaymentMonths: e.target.value })} value={form.repaymentMonths} />
                                         </div>
                                     </div>
-                                    <div className="pt-4 border-t border-blue-100 flex justify-between items-center">
+                                    <div className="pt-4 border-t border-blue-100 flex flex-col md:flex-row justify-between items-start">
                                         <span className="text-sm font-semibold text-blue-800 uppercase">Total Repayment (5% Interest)</span>
-                                        <span className="text-2xl font-black text-blue-600">₱ {form.loanAmount ? (form.loanAmount * 1.05).toLocaleString() : "0"}</span>
+                                        <span className="text-lg md:text-2xl font-black text-blue-600 ">₱ {form.loanAmount ? (form.loanAmount * 1.05).toLocaleString() : "0"}</span>
                                     </div>
                                 </div>
                                 {/* TERMS AND CONDITIONS */}
@@ -817,7 +818,7 @@ export default function Register() {
             </main>
 
             {/* 3. FOOTER */}
-            <Footer />
+            {/* <Footer /> */}
 
             {/* --- MODALS AND OVERLAYS --- */}
             {loading && (
@@ -844,7 +845,7 @@ export default function Register() {
                         <p className="text-gray-500 mb-8 leading-relaxed">
                             Your application for <span className="font-bold text-blue-600">₱{form.loanAmountFormatted}</span> has been successfully processed and approved.
                         </p>
-                        <button onClick={() => router.push("/dashboard")} className="w-full bg-gray-900 text-white font-bold py-5 rounded-2xl shadow-xl hover:bg-black transition-all">
+                        <button onClick={() => router.push("/dashboard")} className="w-full bg-[#0056b3] text-white font-bold py-5 rounded-2xl shadow-xl hover:bg-black transition-all">
                             Access Your Dashboard
                         </button>
                     </div>

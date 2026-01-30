@@ -610,7 +610,7 @@ export default async function Dashboard() {
                         <h1 className="hidden md:block text-xl font-bold text-slate-800">Financial Overview</h1>
                         <div className="flex">
                             <img src="/logo.png" className="md:hidden" alt="Logo" />
-                            <p className="hidden md:block text-lg text-black font-medium">Welcome, {user.name} </p>
+                            <p className="hidden md:block text-lg text-black font-medium capitalize">Welcome, {user.name} </p>
                         </div>
                     </div>
                     <div className="flex items-center gap-6">

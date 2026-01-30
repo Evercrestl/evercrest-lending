@@ -35,7 +35,7 @@ const Footer = () => {
             <div className="mb-4 brightness-0 invert">
               <Image src="/logo.png" alt="Logo" width={160} height={48} className="h-12 w-auto" />
             </div>
-            <p className="text-gray-400 mb-4">Your trusted partner for financial growth.</p>
+            <p className="text-gray-400 mb-4">Your trusted partner for financial growth and stability. We provide secure and fast lending solutions tailored to your needs.</p>
             <div className="flex space-x-4">
               {socialLinks.map((social, index) => (
                 <a key={index} href={social.href || '#'} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand-accent">
@@ -66,9 +66,9 @@ const Footer = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-4 text-gray-400">
-              <li className="flex"><MapPin className="mr-2 text-brand-accent" size={20} /> 123 Financial Dist, NY</li>
+              <li className="flex"><MapPin className="mr-2 text-brand-accent" size={20} /> N Western St ,	San Juan	Metro Manila 1502 Philippines</li>
               <li className="flex"><Phone className="mr-2 text-brand-accent" size={20} /> +1 (555) 123-4567</li>
-              <li className="flex"><Mail className="mr-2 text-brand-accent" size={20} /> support@evercrest.com</li>
+              <li className="flex"><Mail className="mr-2 text-brand-accent" size={20} /> support@evercrestl.com</li>
             </ul>
           </div>
           <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500">

@@ -5,17 +5,68 @@ import { useRouter } from "next/navigation";
 import { Landmark, ChevronDown, Check, X } from "lucide-react";
 import toast from "react-hot-toast";
 
+// const PH_BANKS = [
+//     "BDO Unibank",
+//     "Bank of the Philippine Islands (BPI)",
+//     "Metropolitan Bank and Trust Company (Metrobank)",
+//     "Land Bank of the Philippines",
+//     "Philippine National Bank (PNB)",
+//     "Security Bank",
+//     "China Banking Corporation (China Bank)",
+//     "Union Bank of the Philippines",
+//     "GCash / GCash Padala",
+//     "Maya (formerly PayMaya)",
+
+
+// ];
+
+
 const PH_BANKS = [
-    "BDO Unibank",
-    "Bank of the Philippine Islands (BPI)",
+    "BDO Unibank, Inc.",
     "Metropolitan Bank and Trust Company (Metrobank)",
+    "Bank of the Philippine Islands (BPI)",
     "Land Bank of the Philippines",
-    "Philippine National Bank (PNB)",
-    "Security Bank",
-    "China Banking Corporation (China Bank)",
-    "Union Bank of the Philippines",
     "GCash / GCash Padala",
     "Maya (formerly PayMaya)",
+    "Philippine National Bank (PNB)",
+    "Security Bank Corporation (Security Bank)",
+    "China Banking Corporation (Chinabank)",
+    "Development Bank of the Philippines (DBP)",
+    "Union Bank of the Philippines, Inc. (UnionBank)",
+    "Rizal Commercial Banking Corporation (RCBC)",
+    "United Coconut Planters Bank (UCPB)",
+    "East West Banking Corporation (EastWest Bank)",
+    "Citibank Philippines",
+    "Asia United Bank Corporation (AUB)",
+    "The Hongkong and Shanghai Banking Corporation Limited (HSBC)",
+    "Philippine Trust Company (Philtrust Bank)",
+    "Bank of Commerce",
+    "Maybank Philippines, Inc.",
+    "Robinsons Bank Corporation",
+    "Philippine Bank of Communications (PBCom)",
+    "Mizuho Bank, Ltd. – Manila Branch",
+    "MUFG Bank, Ltd.",
+    "BDO Private Bank",
+    "Standard Chartered Bank Philippines",
+    "Deutsche Bank",
+    "Philippine Veterans Bank (Veterans Bank; PVB)",
+    "CTBC Bank (Chinatrust)",
+    "JPMorgan Chase & Co. (JPMorgan Chase)",
+    "Australia and New Zealand Banking Group (ANZ)",
+    "Sumitomo Mitsui Banking Corporation – Manila Branch",
+    "ING Group N.V.",
+    "Bank of America, N.A.",
+    "Bank of China – Manila Branch",
+    "Mega International Commercial Bank Co., Ltd.",
+    "KEB Hana Bank – Manila Branch",
+    "Bangkok Bank Co., Ltd.",
+    "Industrial Bank of Korea – Manila Branch",
+    "United Overseas Bank Limited – Manila Branch",
+    "Cathay United Bank Co., Ltd. – Manila Branch",
+    "Shinhan Bank – Manila Branch",
+    "Hua Nan Commercial Bank Ltd. – Manila",
+    "First Commercial Bank – Manila",
+    "Al-Amanah Islamic Investment Bank of the Philippines"
 ];
 
 export default function BankAction({ onClose }) { // Added onClose prop from your Dashboard usage

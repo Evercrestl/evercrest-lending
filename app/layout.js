@@ -1,6 +1,7 @@
 import { Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast"
+import Footer from "@/components/Footer";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
         <Toaster position="top-center" />
         
         {children}
+        <Footer />
       
       </body>
     </html>

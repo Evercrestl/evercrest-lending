@@ -40,7 +40,7 @@ const ContactPage = () => {
               <a href="tel:+15551234567" className="text-lg font-semibold text-brand-blue hover:underline">
                 +1 (555) 123-4567
               </a>
-              <p className="text-sm text-gray-500 mt-2">Mon-Fri: 9am - 6pm EST</p>
+              <p className="text-sm text-gray-500 mt-2">Mon-Fri: 9am - 6pm PST</p>
             </div>
 
             <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
@@ -50,7 +50,7 @@ const ContactPage = () => {
               <h3 className="text-xl font-bold text-gray-900 mb-2">Email Us</h3>
               <p className="text-gray-600 mb-4">We usually reply within 24 hours.</p>
               <a href="mailto:support@evercrestlending.com" className="text-lg font-semibold text-brand-blue hover:underline">
-                support@evercrestlending.com
+                support@evercrestl.com
               </a>
             </div>
 
@@ -61,8 +61,8 @@ const ContactPage = () => {
               <h3 className="text-xl font-bold text-gray-900 mb-2">Visit Us</h3>
               <p className="text-gray-600 mb-4">Come see us at our headquarters.</p>
               <address className="not-italic text-gray-800">
-                123 Financial District, Suite 500<br />
-                New York, NY 10005
+                N Western St ,	San Juan	Metro Manila<br />
+                1502 Philippines
               </address>
             </div>
           </div>
@@ -160,9 +160,9 @@ const ContactPage = () => {
           
           <div className="space-y-6">
             {[
-              { q: "What are your business hours?", a: "Our support team is available Monday through Friday from 9:00 AM to 6:00 PM EST. Online applications can be submitted 24/7." },
+              { q: "What are your business hours?", a: "Our support team is available Monday through Friday from 9:00 AM to 6:00 PM PST. Online applications can be submitted 24/7." },
               { q: "How long does it take to get a response?", a: "We strive to respond to all email inquiries within 24 hours. For urgent matters, please call our support line." },
-              { q: "Where is your main office located?", a: "Our headquarters is located in the Financial District of New York City. Please see the address details above." },
+              { q: "Where is your main office located?", a: "Our headquarters is located in the Financial District of Metro Manila. Please see the address details above." },
               { q: "Can I apply for a loan over the phone?", a: "Yes, our loan officers can assist you with the application process over the phone during business hours." }
             ].map((faq, index) => (
               <div key={index} className="bg-gray-50 p-6 rounded-lg border border-gray-100">

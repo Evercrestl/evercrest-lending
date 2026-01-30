@@ -299,7 +299,7 @@ export default async function LoginPage({ searchParams }) {
         <>
             <Navbar />
             <LoginClient searchParams={searchParams} />
-            <Footer />
+            {/* <Footer /> */}
         </>
     );
 }

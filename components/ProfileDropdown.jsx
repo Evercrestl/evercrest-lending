@@ -326,12 +326,12 @@ export default function ProfileDropdown({ user }) {
                 aria-haspopup="true"
             >
                 <div className="text-right">
-                    <p className="text-sm font-bold text-slate-800">
+                    <p className="text-sm font-bold text-slate-800 capitalize">
                         {user.name || "User"}
                     </p>
-                    <p className="text-[10px] text-slate-500 font-bold uppercase">
+                    {/* <p className="text-[10px] text-slate-500 font-bold uppercase">
                         Premium Member
-                    </p>
+                    </p> */}
                 </div>
                 <img
                     src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(user.name || "default")}`}

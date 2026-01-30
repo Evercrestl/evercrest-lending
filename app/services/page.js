@@ -28,7 +28,7 @@ const ServicesPage = () => {
       title: "Personal Loans",
       icon: Users,
       description: "Flexible personal loans designed to help you manage life's expenses. whether you're consolidating debt, planning a wedding, or covering unexpected costs.",
-      features: ["Rates as low as 5.99% APR", "Loan amounts up to $50,000", "No prepayment penalties", "Funds in as little as 24 hours"]
+      features: ["Rates as low as 5.99% APR", "Loan amounts up to ₱50,000", "No prepayment penalties", "Funds in as little as 24 hours"]
     },
     {
       id: "home-mortgages",
@@ -42,7 +42,7 @@ const ServicesPage = () => {
       title: "Business Growth",
       icon: TrendingUp,
       description: "Fuel your business expansion with our tailored commercial lending solutions. From equipment financing to working capital, we have you covered.",
-      features: ["Lines of credit up to $500k", "Equipment financing", "SBA loan assistance", "Dedicated business relationship manager"]
+      features: ["Lines of credit up to ₱500k", "Equipment financing", "SBA loan assistance", "Dedicated business relationship manager"]
     },
     {
       id: "auto-loans",
@@ -141,7 +141,7 @@ const ServicesPage = () => {
           </Link>
         </div>
       </section>
-      <Footer />
+      {/* <Footer /> */}
     </div>
     
   );
