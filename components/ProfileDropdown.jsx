@@ -199,6 +199,28 @@ export default function ProfileDropdown({ user }) {
 
                         <button
                             onClick={() => {
+                                router.push("/loans");
+                                setIsOpen(false);
+                            }}
+                            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                        >
+                            <User size={16} />
+                            <span>Loans</span>
+                        </button>
+
+                        <button
+                            onClick={() => {
+                                router.push("/transactions");
+                                setIsOpen(false);
+                            }}
+                            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                        >
+                            <User size={16} />
+                            <span>Transactions</span>
+                        </button>
+
+                        <button
+                            onClick={() => {
                                 router.push("/settings");
                                 setIsOpen(false);
                             }}
