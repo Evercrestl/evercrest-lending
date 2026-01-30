@@ -590,7 +590,7 @@ export default async function Dashboard() {
                     />
                 </nav>
 
-                <div className="pt-6 border-t border-slate-100">
+                {/* <div className="pt-6 border-t border-slate-100">
                     <form action="/api/auth/logout" method="POST">
                         <button
                             type="submit"
@@ -600,7 +600,7 @@ export default async function Dashboard() {
                             <span className="text-sm">Logout</span>
                         </button>
                     </form>
-                </div>
+                </div> */}
             </aside>
 
             <main className="flex-1 overflow-y-auto">
@@ -609,7 +609,9 @@ export default async function Dashboard() {
                     <div>
                         <h1 className="hidden md:block text-xl font-bold text-slate-800">Financial Overview</h1>
                         <div className="flex">
+                            <Link href="/">
                             <img src="/logo.png" className="md:hidden" alt="Logo" />
+                            </Link>
                             <p className="hidden md:block text-lg text-black font-medium capitalize">Welcome, {user.name} </p>
                         </div>
                     </div>

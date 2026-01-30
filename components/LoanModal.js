@@ -143,7 +143,7 @@ const LoanModal = ({ isOpen, onClose }) => {
           <input 
             type="range" 
             min="1" 
-            max="24" 
+            max="60" 
             value={months}
             onChange={(e) => setMonths(Number(e.target.value))}
             className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
