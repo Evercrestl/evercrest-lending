@@ -45,7 +45,7 @@ export default function TransactionsClient({ user, transactions, stats }) {
                         <ArrowLeft size={20} className="text-slate-600" />
                     </Link>
                     <div>
-                        <h1 className="text-xl font-bold text-slate-800">Transaction History</h1>
+                        <h1 className="text-sm md:text-xl font-bold text-slate-800">Transaction History</h1>
                         <p className="text-sm text-slate-500">
                             View all your financial activities
                         </p>
