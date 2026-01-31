@@ -278,7 +278,7 @@ import jwt from "jsonwebtoken";
 import { redirect } from "next/navigation";
 import LoginClient from "@/components/LoginClient";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+
 
 export default async function LoginPage({ searchParams }) {
     // Check if user is already logged in
