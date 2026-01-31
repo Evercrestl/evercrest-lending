@@ -3,8 +3,13 @@ import sendVerificationEmail from "@/lib/sendVerificationEmail";
 import User from "@/lib/models/User";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import formidable from 'formidable';
 import { rateLimit } from "@/lib/rateLimit";
 import { NextResponse } from "next/server";
+import fs from 'fs/promises';
+import path from 'path';
+
+
 
 export async function POST(req) {
   const ip = req.headers.get("x-forwarded-for") || "unknown";
@@ -68,3 +73,4 @@ export async function POST(req) {
     );
   }
 }
+

@@ -663,7 +663,7 @@ export default function Register() {
 
             {/* 2. REGISTRATION FORM (MAIN CONTENT) */}
             <main className="grow py-12 px-4 bg-gray-50">
-                <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+                <div className="max-w-3xl mx-auto overflow-hidden">
                     <div className="p-8 text-center">
                         <h1 className="text-3xl font-bold text-white">Create Your Account</h1>
                         <p className="text-black mt-2 font-extrabold md:text-3xl">Create an Evercrest Account to Continue</p>
