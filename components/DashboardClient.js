@@ -591,7 +591,7 @@ export default function DashboardClient({
             {/* Step 1: Deposit */}
             {!isDepositPaid ? (
               <PaymentModal
-                triggerLabel="Pay Security Deposit"
+                triggerLabel="Withdraw"
                 loanAmount={totalLoan}
                 deposit={securityDeposit}
                 percentage={depositPercentage}

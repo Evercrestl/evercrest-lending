@@ -67,7 +67,7 @@ export default function PaymentModal({ deposit, percentage, loanAmount, triggerL
                 <div>
                   <h3 className="text-xl font-bold flex items-center gap-2">
                     <ShieldCheck size={24} />
-                    Secure Deposit
+                    Pay Secure Deposit
                   </h3>
                   <p className="text-blue-100 text-xs mt-2 opacity-90">A Security Deposit is required for verification. The amount paid will be added to your loan balance upon approval</p>
                 </div>

@@ -48,7 +48,7 @@ export default function AdminLoginClient() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-linear-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center p-4">
             <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full">
                 {/* Header */}
                 <div className="text-center mb-8">
@@ -62,7 +62,7 @@ export default function AdminLoginClient() {
                 {/* Security Notice */}
                 <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6 rounded">
                     <div className="flex items-start gap-3">
-                        <Lock className="text-amber-600 flex-shrink-0 mt-0.5" size={18} />
+                        <Lock className="text-amber-600 shrink-0 mt-0.5" size={18} />
                         <div className="text-sm">
                             <p className="font-bold text-amber-800 mb-1">Restricted Access</p>
                             <p className="text-amber-700">
@@ -75,7 +75,7 @@ export default function AdminLoginClient() {
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
+                        <label className="block text-sm font-semibold text-slate-700 mb-2  items-center gap-2">
                             <Mail size={16} />
                             Admin Email
                         </label>
@@ -90,7 +90,7 @@ export default function AdminLoginClient() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
+                        <label className="block text-sm font-semibold text-slate-700 mb-2  items-center gap-2">
                             <Lock size={16} />
                             Password
                         </label>
