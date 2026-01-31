@@ -552,6 +552,7 @@ export default function BankAction({ onClose }) {
                         <Landmark className="text-blue-600" />
                     </div>
 
+                <div className="flex items-center justify-between mb-6">
                     <div className="flex-1">
                         <p className="text-sm font-bold text-slate-800">
                             {selectedBank || "Add Bank Account"}
@@ -561,6 +562,15 @@ export default function BankAction({ onClose }) {
                                 ? "Change your linked bank"
                                 : "Link your PH bank account"}
                         </p>
+
+                    </div>
+                    <button
+        onClick={onClose}
+        className="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 transition-all active:scale-95 ml-4"
+        type="button"
+    >
+        <X className="w-5 h-5 text-slate-600" strokeWidth={2.5} />
+    </button>
                     </div>
 
                     <ChevronDown
