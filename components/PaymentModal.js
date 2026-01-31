@@ -50,7 +50,7 @@ export default function PaymentModal({ deposit, percentage, loanAmount, triggerL
       
       <button
         onClick={() => setIsOpen(true)}
-        className="w-full sm:w-auto bg-white text-blue-600 px-8 py-3.5 rounded-2xl font-bold shadow-lg hover:shadow-blue-200 transition-all active:scale-95 text-sm sm:text-base"
+        className="w-full sm:w-auto bg-[#0056ef] text-white px-8 py-3.5 rounded-2xl font-bold shadow-lg hover:shadow-blue-200 transition-all active:scale-95 text-sm sm:text-base"
       >
         {triggerLabel}
       </button>
