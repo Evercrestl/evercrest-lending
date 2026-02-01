@@ -1,6 +1,7 @@
 import { Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast"
+import TawkToChat from "@/components/TawkToChat";
 import Footer from "@/components/Footer";
 
 const playfair = Playfair_Display({
@@ -25,8 +26,8 @@ export default function RootLayout({ children }) {
         <Toaster position="top-center" />
         
         {children}
+        <TawkToChat />
         <Footer />
-      
       </body>
     </html>
   );

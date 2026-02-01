@@ -802,7 +802,7 @@ export default async function Dashboard() {
                     </div>
                 </div>
             </main>
-            <FloatingWhatsAppButton />
+            {/* <FloatingWhatsAppButton /> */}
         </div>
     );
 }
