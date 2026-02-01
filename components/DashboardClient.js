@@ -601,7 +601,7 @@ export default function DashboardClient({
             !hasBankDetails ? (
               <button
                 onClick={() => setShowBankModal(true)}
-                className="w-full px-8 py-5 rounded-2xl font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-lg transition-all active:scale-95"
+                className="w-full px-8 py-5 rounded-2xl font-bold bg-[#0056b3] text-white hover:bg-blue-700 shadow-lg transition-all active:scale-95"
               >
                 Add Bank Details
               </button>

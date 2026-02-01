@@ -627,7 +627,7 @@ export default async function Dashboard() {
                 <div className="p-8 max-w-7xl mx-auto space-y-8">
                     <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                         {/* Hero Card */}
-                        <div className="xl:col-span-2 bg-[#0296e0] rounded-3xl p-6 sm:p-8 lg:p-10 text-white shadow-2xl shadow-blue-200 relative overflow-hidden flex flex-col justify-between min-h-72 max-w-full">
+                        <div className="xl:col-span-2 bg-[#0056b3] rounded-3xl p-6 sm:p-8 lg:p-10 text-white shadow-2xl shadow-blue-200 relative overflow-hidden flex flex-col justify-between min-h-72 max-w-full">
                             {/* Top */}
                             <div className="relative z-10">
                                 <p className="text-xs sm:text-sm opacity-80 font-semibold uppercase tracking-widest">
