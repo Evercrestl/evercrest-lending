@@ -29,6 +29,14 @@ export async function POST(req) {
     await connectDB();
     const body = await req.json();
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(body.email)) {
+      return NextResponse.json(
+        { error: "Please provide a valid email address" },
+        { status: 400 }
+      );
+    }
+
     // 1. SANITIZE PHONE NUMBER
     // This removes everything except digits (strips +, spaces, dashes)
     const sanitizedPhoneNumber = body.phoneNumber.replace(/\D/g, '');
