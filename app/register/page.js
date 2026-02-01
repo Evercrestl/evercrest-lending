@@ -202,7 +202,7 @@ export default function Register() {
                                         />
                                         {emailError && <p className="text-xs text-red-500 ml-1 mt-1">{emailError}</p>}
                                     </div>
-                                    <div className="space-y-1">
+                                    {/* <div className="space-y-1">
                                         <label className="text-xs font-bold text-gray-500 uppercase ml-1">Password</label>
                                         <div className="relative">
                                             <input
@@ -220,7 +220,7 @@ export default function Register() {
                                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                                             </button>
                                         </div>
-                                    </div>
+                                    </div> */}
 
                                     <div className="space-y-1">
                                         <label className="text-xs font-bold text-gray-500 uppercase ml-1">Password</label>
