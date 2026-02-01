@@ -37,6 +37,14 @@ export async function POST(req) {
       );
     }
 
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(body.password)) {
+      return NextResponse.json(
+        { error: "Password must contain at least 8 characters, including uppercase, lowercase, number, and special character (@$!%*?&)" },
+        { status: 400 }
+      );
+    }
+
     // 1. SANITIZE PHONE NUMBER
     // This removes everything except digits (strips +, spaces, dashes)
     const sanitizedPhoneNumber = body.phoneNumber.replace(/\D/g, '');

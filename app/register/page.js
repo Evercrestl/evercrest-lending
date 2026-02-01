@@ -40,6 +40,7 @@ export default function Register() {
     const [countdown, setCountdown] = useState(60);
     const [processStatus, setProcessStatus] = useState("Initializing application...");
     const [emailError, setEmailError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
 
     const goToStep2 = () => {
         const required = ['name', 'email', 'password', 'phoneNumber', 'dateOfBirth', 'gender', 'workStatus', 'loanType', 'loanAmount', 'repaymentMonths'];
@@ -50,6 +51,11 @@ export default function Register() {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(form.email)) {
             toast.error("Please enter a valid email address");
+            return;
+        }
+        const passwordValidationError = validatePassword(form.password);
+        if (passwordValidationError) {
+            toast.error(passwordValidationError);
             return;
         }
 
@@ -131,6 +137,39 @@ export default function Register() {
         }
     };
 
+    const validatePassword = (password) => {
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+        if (!password) {
+            return "Password is required";
+        }
+        if (password.length < 8) {
+            return "Password must be at least 8 characters long";
+        }
+        if (!/(?=.*[a-z])/.test(password)) {
+            return "Password must contain at least one lowercase letter";
+        }
+        if (!/(?=.*[A-Z])/.test(password)) {
+            return "Password must contain at least one uppercase letter";
+        }
+        if (!/(?=.*\d)/.test(password)) {
+            return "Password must contain at least one number";
+        }
+        if (!/(?=.*[@$!%*?&])/.test(password)) {
+            return "Password must contain at least one special character (@$!%*?&)";
+        }
+        return "";
+    }
+
+    const handlePasswordChange = (e) => {
+        const password = e.target.value;
+        setForm({ ...form, password });
+
+        // Real-time validation
+        const error = validatePassword(password);
+        setPasswordError(error);
+    };
+
     return (
         <div className="flex flex-col min-h-screen bg-white">
             {/* 1. NAVBAR */}
@@ -182,6 +221,59 @@ export default function Register() {
                                             </button>
                                         </div>
                                     </div>
+
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">Password</label>
+                                        <div className="relative">
+                                            <input
+                                                type={showPassword ? "text" : "password"}
+                                                placeholder="••••••••"
+                                                className={`w-full border ${passwordError ? 'border-red-500' : 'border-gray-200'} rounded-xl px-4 py-3 pr-12 bg-gray-50 focus:ring-2 ${passwordError ? 'focus:ring-red-500' : 'focus:ring-blue-500'} outline-none`}
+                                                onChange={handlePasswordChange}
+                                                value={form.password}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                                            >
+                                                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                            </button>
+                                        </div>
+                                        {passwordError && (
+                                            <p className="text-xs text-red-500 ml-1 mt-1">{passwordError}</p>
+                                        )}
+                                        {/* Password strength indicator */}
+                                        <div className="ml-1 mt-2 space-y-1">
+                                            <div className="flex items-center gap-2 text-xs">
+                                                <span className={form.password.length >= 8 ? "text-green-600" : "text-gray-400"}>
+                                                    {form.password.length >= 8 ? "✓" : "○"} At least 8 characters
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs">
+                                                <span className={/(?=.*[A-Z])/.test(form.password) ? "text-green-600" : "text-gray-400"}>
+                                                    {/(?=.*[A-Z])/.test(form.password) ? "✓" : "○"} One uppercase letter
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs">
+                                                <span className={/(?=.*[a-z])/.test(form.password) ? "text-green-600" : "text-gray-400"}>
+                                                    {/(?=.*[a-z])/.test(form.password) ? "✓" : "○"} One lowercase letter
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs">
+                                                <span className={/(?=.*\d)/.test(form.password) ? "text-green-600" : "text-gray-400"}>
+                                                    {/(?=.*\d)/.test(form.password) ? "✓" : "○"} One number
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs">
+                                                <span className={/(?=.*[@$!%*?&])/.test(form.password) ? "text-green-600" : "text-gray-400"}>
+                                                    {/(?=.*[@$!%*?&])/.test(form.password) ? "✓" : "○"} One special character (@$!%*?&)
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                     <div className="space-y-1">
                                         <label className="text-xs font-bold text-gray-500 uppercase ml-1">Phone Number</label>
                                         <PhoneInput country={'ph'} value={form.phoneNumber} onChange={(phone) => setForm({ ...form, phoneNumber: phone })} inputClass="!w-full !h-[50px] !border-gray-200 !rounded-xl !bg-gray-50" />
