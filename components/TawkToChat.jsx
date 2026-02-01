@@ -12,7 +12,7 @@ export default function TawkToChat() {
             var s0 = document.getElementsByTagName("script")[0];
             
             s1.async = true;
-            s1.src = 'https://embed.tawk.to/697f166d0f84561c35470a32/1jgc6v7qj';
+            s1.src = 'https://embed.tawk.to/697f415cc9bdb51c3ad4013c/1jgchekbs';
             s1.charset = 'UTF-8';
             s1.setAttribute('crossorigin', '*');
             
