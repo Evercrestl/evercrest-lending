@@ -934,13 +934,11 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Autocomplete from "react-google-autocomplete";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import CurrencyInput from "@/components/CurrencyInput";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function Register() {
