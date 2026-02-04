@@ -1,8 +1,9 @@
 "use client"
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
+import toast from 'react-hot-toast';
+
 
 const ContactPage = () => {
   const [loading, setLoading] = useState(false);
