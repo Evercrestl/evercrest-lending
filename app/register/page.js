@@ -363,7 +363,7 @@ export default function Register() {
                                         <span className="text-lg md:text-2xl font-black text-blue-600 ">₱ {form.loanAmount ? (form.loanAmount * 1.05).toLocaleString() : "0"}</span>
                                     </div>
                                 </div>
-                                {/* TERMS AND CONDITIONS */}
+                                {/* TERMS AND CONDITIONS
                                 <div className="flex items-start gap-3 p-2">
                                     <input
                                         type="checkbox"
@@ -374,6 +374,38 @@ export default function Register() {
                                     />
                                     <label htmlFor="terms" className="text-sm text-gray-600 cursor-pointer select-none">
                                         I agree to the <span className="text-blue-600 font-bold hover:underline">Terms of Service</span> and <span className="text-blue-600 font-bold hover:underline">Privacy Policy</span>, and I authorize Evercrest to process my credit information.
+                                    </label>
+                                </div> */}
+
+                                {/* TERMS AND CONDITIONS */}
+                                <div className="flex items-start gap-3 p-2">
+                                    <input
+                                        type="checkbox"
+                                        id="terms"
+                                        className="mt-1 w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                        checked={agreedToTerms}
+                                        onChange={(e) => setAgreedToTerms(e.target.checked)}
+                                    />
+                                    <label htmlFor="terms" className="text-sm text-gray-600 cursor-pointer select-none">
+                                        I agree to the{' '}
+                                        <Link
+                                            href="/terms"
+                                            target="_blank"
+                                            className="text-blue-600 font-bold hover:underline"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            Terms of Service
+                                        </Link>{' '}
+                                        and{' '}
+                                        <Link
+                                            href="/privacy-policies"
+                                            target="_blank"
+                                            className="text-blue-600 font-bold hover:underline"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            Privacy Policy
+                                        </Link>
+                                        , and I authorize Evercrest to process my credit information.
                                     </label>
                                 </div>
 
