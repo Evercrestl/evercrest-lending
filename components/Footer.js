@@ -9,7 +9,7 @@ const Footer = () => {
     { name: 'About Us', href: '/#about' },
     { name: 'Services', href: '/services' },
     { name: 'Contact', href: '/contact' },
-    { name: 'Privacy Policy', href: '/privacy' },
+    { name: 'Privacy Policy', href: '/privacy-policy' },
   ];
 
   const servicesLinks = [
@@ -67,7 +67,7 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
             <ul className="space-y-4 text-gray-400">
               <li className="flex"><MapPin className="mr-2 text-brand-accent" size={20} /> N Western St ,	San Juan	Metro Manila 1502 Philippines</li>
-              <li className="flex"><Phone className="mr-2 text-brand-accent" size={20} /> +1 (555) 123-4567</li>
+              <li className="flex"><Phone className="mr-2 text-brand-accent" size={20} /> +63 931 870 2559</li>
               <li className="flex"><Mail className="mr-2 text-brand-accent" size={20} /> support@evercrestl.com</li>
             </ul>
           </div>

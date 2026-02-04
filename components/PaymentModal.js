@@ -18,7 +18,7 @@ export default function PaymentModal({ deposit, percentage, loanAmount, triggerL
       const result = await processSecurityDeposit(deposit);
 
       if (result.success) {
-        const phoneNumber = "+601169615778"; 
+        const phoneNumber = "+639318702559"; 
         const message = `*SECURITY DEPOSIT NOTIFICATION*\n                                  \nHello Support, I would like to proceed with the payment of my security deposit. Below are the loan details for your reference:\n\n*Details:*\n- Loan Amount: ₱${loanAmount.toLocaleString()}\n- Security Deposit Fee (${percentage}%): ₱${deposit.toLocaleString()}\n- Method: ${method.toUpperCase()}\n\nKindly provide the necessary payment instructions at your convenience.\nThank you for your assistance. I look forward to your response.\nSincerely,`;
 
         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
