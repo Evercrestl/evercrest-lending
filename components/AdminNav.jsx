@@ -31,7 +31,7 @@ export default function AdminNav({ user }) {
     const navLinks = [
         { name: "Approvals", href: "/admin", icon: <FileText size={20} /> },
         { name: "Users", href: "/admin/users", icon: <Users size={20} /> },
-        { name: "messages", href: "/admin/messages", icon: <MessagesSquare size={20} /> },
+        { name: "Messages", href: "/admin/messages", icon: <MessagesSquare size={20} /> },
     ];
 
     return (
