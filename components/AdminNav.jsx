@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Users, FileText, LogOut, Menu, X } from "lucide-react";
+import { Users, FileText, LogOut, Menu, X, MessagesSquare } from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function AdminNav({ user }) {
@@ -31,6 +31,7 @@ export default function AdminNav({ user }) {
     const navLinks = [
         { name: "Approvals", href: "/admin", icon: <FileText size={20} /> },
         { name: "Users", href: "/admin/users", icon: <Users size={20} /> },
+        { name: "messages", href: "/admin/messages", icon: <MessagesSquare size={20} /> },
     ];
 
     return (
