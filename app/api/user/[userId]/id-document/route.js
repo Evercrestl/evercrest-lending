@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import connectDB from '@/lib/config/db';
+import { connectDB } from '@/lib/config/db';
 import User from '@/lib/models/User';
 import { updateInCloudinary, deleteFromCloudinary } from '@/lib/uploadToCloudinary';
 
