@@ -626,6 +626,73 @@ const fileToBase64 = (file) => {
     });
 };
 
+const compressImage = (file, maxSizeMB = 2, maxWidthOrHeight = 1920) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        // Calculate resize dimensions
+        if (width > height) {
+          if (width > maxWidthOrHeight) {
+            height *= maxWidthOrHeight / width;
+            width = maxWidthOrHeight;
+          }
+        } else {
+          if (height > maxWidthOrHeight) {
+            width *= maxWidthOrHeight / height;
+            height = maxWidthOrHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Try different quality levels to hit target size
+        const tryQuality = (quality) => {
+          canvas.toBlob(
+            (blob) => {
+              if (!blob) {
+                reject(new Error('Failed to compress image'));
+                return;
+              }
+
+              const sizeMB = blob.size / 1024 / 1024;
+              
+              // If still too large and quality can be reduced more
+              if (sizeMB > maxSizeMB && quality > 0.3) {
+                tryQuality(quality - 0.1);
+              } else {
+                // Create File from Blob
+                const compressedFile = new File([blob], file.name, {
+                  type: 'image/jpeg',
+                  lastModified: Date.now(),
+                });
+                resolve(compressedFile);
+              }
+            },
+            'image/jpeg',
+            quality
+          );
+        };
+
+        tryQuality(0.8); // Start with 80% quality
+      };
+      img.onerror = reject;
+    };
+    reader.onerror = reject;
+  });
+};
+
 export default function Register() {
     const router = useRouter();
     const [step, setStep] = useState(1);
@@ -710,40 +777,97 @@ export default function Register() {
         }
     };
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
+    // const handleFileChange = (e) => {
+    //     const file = e.target.files[0];
         
-        if (!file) return;
+    //     if (!file) return;
 
-        // Validate file type
-        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
-        if (!allowedTypes.includes(file.type)) {
-            toast.error("Invalid file type. Only JPG, PNG, and PDF are allowed");
-            e.target.value = null;
-            return;
-        }
+    //     // Validate file type
+    //     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+    //     if (!allowedTypes.includes(file.type)) {
+    //         toast.error("Invalid file type. Only JPG, PNG, and PDF are allowed");
+    //         e.target.value = null;
+    //         return;
+    //     }
 
-        // Validate file size (10MB max)
-        const maxSize = 10 * 1024 * 1024;
-        if (file.size > maxSize) {
-            toast.error("File size exceeds 10MB limit");
-            e.target.value = null;
-            return;
-        }
+    //     // Validate file size (10MB max)
+    //     const maxSize = 10 * 1024 * 1024;
+    //     if (file.size > maxSize) {
+    //         toast.error("File size exceeds 10MB limit");
+    //         e.target.value = null;
+    //         return;
+    //     }
 
-        setForm({ ...form, idDocument: file });
+    //     setForm({ ...form, idDocument: file });
 
-        // Create preview for images
-        if (file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setIdPreview(reader.result);
-            };
-            reader.readAsDataURL(file);
-        } else {
-            setIdPreview('pdf');
-        }
+    //     // Create preview for images
+    //     if (file.type.startsWith('image/')) {
+    //         const reader = new FileReader();
+    //         reader.onloadend = () => {
+    //             setIdPreview(reader.result);
+    //         };
+    //         reader.readAsDataURL(file);
+    //     } else {
+    //         setIdPreview('pdf');
+    //     }
+    // };
+
+    const handleFileChange = async (e) => {
+  const file = e.target.files[0];
+  
+  if (!file) return;
+
+  // Validate file type
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+  if (!allowedTypes.includes(file.type)) {
+    toast.error("Invalid file type. Only JPG, PNG, and PDF are allowed");
+    e.target.value = null;
+    return;
+  }
+
+  let fileToUpload = file;
+
+  // COMPRESS IMAGE FILES AUTOMATICALLY
+  if (file.type.startsWith('image/')) {
+    const originalSizeMB = file.size / 1024 / 1024;
+    
+    // Only compress if larger than 1MB
+    if (originalSizeMB > 1) {
+      try {
+        toast.info("Compressing image, please wait...");
+        fileToUpload = await compressImage(file, 2); // Target: 2MB max
+        const newSizeMB = fileToUpload.size / 1024 / 1024;
+        toast.success(`Image compressed: ${originalSizeMB.toFixed(2)}MB → ${newSizeMB.toFixed(2)}MB`);
+      } catch (error) {
+        console.error("Compression error:", error);
+        toast.error("Failed to compress image. Please use a smaller file.");
+        e.target.value = null;
+        return;
+      }
+    }
+  }
+
+  // Validate final file size (after compression)
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  if (fileToUpload.size > maxSize) {
+    toast.error("File size exceeds 5MB limit even after compression. Please use a smaller image.");
+    e.target.value = null;
+    return;
+  }
+
+  setForm({ ...form, idDocument: fileToUpload });
+
+  // Create preview for images
+  if (fileToUpload.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setIdPreview(reader.result);
     };
+    reader.readAsDataURL(fileToUpload);
+  } else {
+    setIdPreview('pdf');
+  }
+};
 
     const removeFile = () => {
         setForm({ ...form, idDocument: null });

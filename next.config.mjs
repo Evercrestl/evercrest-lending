@@ -1,42 +1,51 @@
+// // // /** @type {import('next').NextConfig} */
+// // // const nextConfig = {
+// // //   /* config options here */
+// // //   reactCompiler: true,
+// // // };
+
+// // // export default nextConfig;
+
 // // /** @type {import('next').NextConfig} */
 // // const nextConfig = {
-// //   /* config options here */
-// //   reactCompiler: true,
+// //   // Increase API route body size limit to 50MB
+// //   api: {
+// //     bodyParser: {
+// //       sizeLimit: '50mb',
+// //     },
+// //   },
+  
+// //   // For App Router (Next.js 13+), you need experimental settings
+// //   experimental: {
+// //     serverActions: {
+// //       bodySizeLimit: '50mb',
+// //     },
+// //   },
+
+// //   images: {
+// //     domains: ['res.cloudinary.com'], // Add Cloudinary domain for Next.js Image component
+// //   },
 // // };
 
-// // export default nextConfig;
+// // module.exports = nextConfig;
+
 
 // /** @type {import('next').NextConfig} */
 // const nextConfig = {
-//   // Increase API route body size limit to 50MB
-//   api: {
-//     bodyParser: {
-//       sizeLimit: '50mb',
-//     },
-//   },
-  
-//   // For App Router (Next.js 13+), you need experimental settings
 //   experimental: {
 //     serverActions: {
 //       bodySizeLimit: '50mb',
 //     },
 //   },
-
 //   images: {
-//     domains: ['res.cloudinary.com'], // Add Cloudinary domain for Next.js Image component
+//     domains: ['res.cloudinary.com'],
 //   },
 // };
 
-// module.exports = nextConfig;
-
+// export default nextConfig;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: {
-      bodySizeLimit: '50mb',
-    },
-  },
   images: {
     domains: ['res.cloudinary.com'],
   },
