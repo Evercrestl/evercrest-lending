@@ -1180,7 +1180,7 @@ export default function Register() {
                                         <div className="space-y-1">
                                             <label className="text-xs font-bold text-gray-500 uppercase ml-1">Repayment Period (Months) *</label>
                                             <input type="number" placeholder="e.g. 12" min="1"
-                                                max="24" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:ring-2 focus:ring-blue-500 outline-none" onChange={(e) => setForm({ ...form, repaymentMonths: e.target.value })} value={form.repaymentMonths} />
+                                                max="60" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:ring-2 focus:ring-blue-500 outline-none" onChange={(e) => setForm({ ...form, repaymentMonths: e.target.value })} value={form.repaymentMonths} />
                                         </div>
                                     </div>
                                     <div className="pt-4 border-t border-blue-100 flex flex-col md:flex-row justify-between items-start">
