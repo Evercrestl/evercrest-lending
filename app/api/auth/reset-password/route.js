@@ -40,7 +40,6 @@ export async function POST(req) {
             const expiredUser = await User.findOne({
                 resetPasswordToken: resetTokenHash,
             })
-
             if (expiredUser){           
                 return NextResponse.json(
                     { error: "Invalid or expired reset token" },
@@ -51,7 +50,7 @@ export async function POST(req) {
                 {error: "Invalid or expired rest token"},
                 {status: 400}
             )
-            
+        }
 
         // Hash new password
         const hashedPassword = await bcrypt.hash(password, 10);
