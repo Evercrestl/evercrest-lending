@@ -15,8 +15,8 @@
 //       {/* Hero Section */}
 //       <section className="relative h-screen flex items-center justify-center pt-16">
 //         <div className="absolute inset-0 z-0">
-//           <img
-//             src="https://public.youware.com/users-website-assets/prod/0060604d-563e-4b70-9f2f-5525f45b31de/6221bd8b874a420f8a783247e1f0787e.jpg"
+//           <Image
+//             src="back.png"
 //             alt="Happy couple moving into new home"
 //             className="w-full h-full object-cover"
 //           />
@@ -232,6 +232,7 @@ import Navbar from '@/components/Navbar';
 import { useState } from 'react';
 import { ArrowRight, Shield, Clock, Percent, CheckCircle, TrendingUp, Users, IdCard, Phone, MapPin, Star } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image'
 import LoanModal from '@/components/LoanModal';
 
 
@@ -246,7 +247,7 @@ const LandingPage = () => {
       <section className="relative h-screen flex items-center justify-center pt-16">
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://pixabay.com/get/g0c56270226a639de1c5da027d85275c75ad00b91eb2bd954368eb1dafbee18889b85dc4bf66e6032f3fafe4fedc923fb09b33146387ba864772712977648804b_1280.jpg" 
+            src="/back.png" 
             alt="Happy Filipino family moving into new home" 
             className="w-full h-full object-cover"
           />
