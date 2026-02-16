@@ -159,7 +159,7 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/config/db";
 import User from "@/lib/models/User";
 import crypto from "crypto";
-import { sendPasswordResetEmail } from "@/lib/sendMail";
+import { sendPasswordResetEmail } from "@/lib/mailer";
 
 export async function POST(req) {
     try {
