@@ -332,7 +332,7 @@ export default function PaymentModal({ deposit, percentage, loanAmount, triggerL
                     disabled={loading}
                     className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold rounded-2xl transition-all shadow-xl shadow-blue-100 flex justify-center items-center gap-3"
                   >
-                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Confirm Payment"}
+                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Proceed to make Payment"}
                   </button>
                   <button
                     type="button"
