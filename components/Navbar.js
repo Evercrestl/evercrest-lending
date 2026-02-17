@@ -361,7 +361,7 @@ const Navbar = () => {
     // Navigation links for non-authenticated users
     const guestLinks = [
         { name: 'Home', href: '/' },
-        { name: 'About', href: '#about' },
+        { name: 'About', href: 'about' },
         { name: 'Services', href: '/services' },
         { name: 'Contact', href: '/contact' },
         { name: 'Login', href: '/login' },
